@@ -52,4 +52,5 @@
             Environment varibale for various profile will be found in launchSettings.json, we can also set the environment varible by adding new environment variable in Control panal -> System : Environment Variable "ASPNETCORE_ENVIRONMENT = Development"
 
        </p>
+    </p>
 </p>
