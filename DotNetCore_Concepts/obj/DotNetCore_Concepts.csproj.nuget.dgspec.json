@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj": {}
+    "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj": {
+    "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
+        "projectUniqueName": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
         "projectName": "DotNetCore_Concepts",
-        "projectPath": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
+        "projectPath": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
         "packagesPath": "C:\\Users\\newman\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts\\obj\\",
+        "outputPath": "C:\\Projects\\Learn\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\newman\\AppData\\Roaming\\NuGet\\NuGet.Config",
