@@ -30,5 +30,32 @@
         ex. Exception Hanlder, Authenticate users, Serve static files. Middleware are use to setup the Http request pipeline.  Configure method of startup.cs is the place to confiure our middleware.<br/>
        </p>
        <p>
+            Every middleware has access to incoming request abd out going response.
+            We have different middlewares among that we have two types
+                <ul>
+                    <li>Terminal middleware (app.Run) <br/>Once process the request, produce the response and pipeline revertes itself from here. </li>
+                    <li>Continueing middleware(ap.Use) once process request, its trasnfer the request to next middleware</li>
+                </ul>
+       </p>
+       <div style="background-color: seashell">
+            app.Use(async (context,next) => {
+                await context.Response.WriteAsync("My first middleware");
+                await next();
+            });
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("My second middleware");
+            });
+
+            //Thismiddle ware is not reachable
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("My third middleware");
+            });
+       </div>
+       <p>
+        <h3>Configuring http piple line</h3><br/>
+
        </p>
 </p>
