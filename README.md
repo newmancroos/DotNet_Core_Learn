@@ -37,27 +37,19 @@
                     <li>Continueing middleware(ap.Use) once process request, its trasnfer the request to next middleware</li>
                 </ul>
        </p>
-       <div style="background-color: seashell">
-        <code>
-            app.Use(async (context,next) => {
-                await context.Response.WriteAsync("My first middleware");
-                await next();
-            });
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("My second middleware");
-            });
-
-            //Thismiddle ware is not reachable
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("My third middleware");
-            });
-        </code>
-       </div>
        <p>
-        <h3>Configuring http piple line</h3><br/>
+        We can inject ILogger to Configure method so that we can log activities.
+        <br/>ex: <b>ILogger<Startup> logger</b>
+       </p>
+       <p>
+        For displaying static page like image or html we need to add app.UseStaticFiles middleware and to use default html file(default.html) we need to add app.UseDefaultFiles(). But the order should br app.UseDefaultFiles and then app.UseStaticFiles(). <br/>
+        In app.UseDefaultfiles we have option(DefaultFilesOptions) to change the default file from default.html file to any other files. <br/>
+
+        Likewise instead of useing app.UseDefaultFiles() and app.UseStaticFiles() we can use one middleware called app.UseFileServer() middleware. this also accept file option to change default file(FileServerOption)
+       </p>
+       <p>
+            <h3>Environment Variable</h3><br/>
+            Environment varibale for various profile will be found in launchSettings.json, we can also set the environment varible by adding new environment variable in Control panal -> System : Environment Variable "ASPNETCORE_ENVIRONMENT = Development"
 
        </p>
 </p>
