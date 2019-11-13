@@ -38,6 +38,7 @@
                 </ul>
        </p>
        <div style="background-color: seashell">
+        <code>
             app.Use(async (context,next) => {
                 await context.Response.WriteAsync("My first middleware");
                 await next();
@@ -53,6 +54,7 @@
             {
                 await context.Response.WriteAsync("My third middleware");
             });
+        </code>
        </div>
        <p>
         <h3>Configuring http piple line</h3><br/>
