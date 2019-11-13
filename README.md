@@ -42,15 +42,13 @@
         <br/>ex: <b>ILogger<Startup> logger</b>
        </p>
        <p>
-        For displaying static page like image or html we need to add app.UseStaticFiles middleware and to use default html file(default.html) we need to add app.UseDefaultFiles(). But the order should br app.UseDefaultFiles and then app.UseStaticFiles(). <br/>
-        In app.UseDefaultfiles we have option(DefaultFilesOptions) to change the default file from default.html file to any other files. <br/>
-
-        Likewise instead of useing app.UseDefaultFiles() and app.UseStaticFiles() we can use one middleware called app.UseFileServer() middleware. this also accept file option to change default file(FileServerOption)
+        For displaying static page like image or html we need to add app.UseStaticFiles middleware and to use default html file(default.html) we need to add app.UseDefaultFiles(). But the order should br app.UseDefaultFiles and then app.UseStaticFiles(). <br>
+        In app.UseDefaultfiles we have option(DefaultFilesOptions) to change the default file from default.html file to any other files.
+        <br>Likewise instead of useing app.UseDefaultFiles() and app.UseStaticFiles() we can use one middleware called app.UseFileServer() middleware. this also accept file option to change default file(FileServerOption)
        </p>
        <p>
-            <h3>Environment Variable</h3><br/>
+            <h3>Environment Variable</h3><br>
             Environment varibale for various profile will be found in launchSettings.json, we can also set the environment varible by adding new environment variable in Control panal -> System : Environment Variable "ASPNETCORE_ENVIRONMENT = Development"
-
        </p>
     </p>
 </p>
