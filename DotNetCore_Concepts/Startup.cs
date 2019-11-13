@@ -30,12 +30,30 @@ namespace DotNetCore_Concepts
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
+            app.UseRouting();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Hello World");
+            //    });
+            //});
+
+            app.Use(async (context, next) => {
+                await context.Response.WriteAsync("My first middleware");
+                await next();
+            });
+
+            app.Run(async (context) =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync(_config["MyKey"]);
-                });
+                await context.Response.WriteAsync("My second middleware");
+            });
+
+            //Thismiddle ware is not reachable
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("My third middleware");
             });
         }
     }
