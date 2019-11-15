@@ -52,3 +52,82 @@
        </p>
     </p>
 </p>
+<p>
+    <h2>ASP.NET MVC</h2>
+    <p>
+        A controller method can returns ObjectResult, HttpResponse, JSonResult or ViewResult. Since we create MVC application controller method returns ViewResult. ex return View(Object). <br>
+        When we return View from controller, it check wether we have a .cshtml page under the following directories (Let assumt our controller is Home and Mthod is Details)
+        <br>
+        <ul>
+            <li>/Views/Home/Details.cshtml</li>
+            <li>/Views/Shared/Details.cshtml</li>
+            <li>/Pages/Shared/Details.cshtml</li>
+        </ul>
+        <br>
+        Let say we have Two controller and methods on it and the view directory structure as follows<br>
+        <p>
+            <ul>
+                <li>Employee Controller<ul>
+							<li>Details</li>
+							<li>Edit</li>
+							<li>List</li>
+						</ul>
+				</li>
+				<li>Home Controller
+					<ul>
+						<li>Details</li>
+						<li>Edit</li>
+						<li>Index</li>
+					</ul>
+				</li>
+			</ul>
+			Then View directory will be <br>
+				View -> Employee -> Details.cshtml, Edit.cshtml,List.cshtml <br>
+				View -> Home -> Details.cshtml, Edit.cshtml, Index.cshtml
+        </p>
+        <p>
+            By default mvc expect view same as the action method but we can change this conversion.<br>
+                <i>return View("ViewName", ObjectModel)</i> <br>
+            Also View can also have our view anywhere and specify the absolute path when call the view
+            <i>return View("Myviews/Test.cshtml"); </i>
+        </p>
+        <p>
+            <h3>Passing data to View</3>
+            We can pass data to view in three ways
+            <ul>
+                <li>ViewData</li>
+                <li>ViewBag</li>
+                <li>Strongly Typed View</li>
+            </ul>
+            <b>View Data : </b> <br>
+                      -> ViewData["Employee"] =objEmployee;<br>
+                      -> ViewData["PageTitle"] = "Employee Details";<br>
+            return View();<br>
+            From cshtml side we can read these data <br>
+            @{
+                var employee = ViewData["Employee] as Asp_Net_MVC_.Model.Employee;
+            }
+            Then displau it using Name @employee.Name <br>
+             <b>View Bag : </b> <br>
+              ViewBag is a wrapper around ViewData here we can use dynamic property.<br>
+              ViewBag.Employee = objEmployee; <br>
+              <i>ViewBag.title = "Employee Details";</i></br>
+              Also when we display fields we can use like <br>
+              ViewBag.Title <br> and we don't want to type cast objects to its type but we can directly use <br>
+              <i>ViewBag.Employee.Name</i>
+        </p>
+        <p>ViewData and ViewBag are loosely typed view</p>
+        <p>
+           <b>Strongly Typed View : </b> <br>
+           We can directly pass object to the view in the return View statement like <br>
+           return View(employee);<br>
+           and from view side we need to include @model directive on top of the page like <br>
+            @model Mysample.Models.Employee<br>
+            Now my model is strongly type and when we say @Model.Name  -> we'll get the intellisence.
+        </p>
+        <p>
+            <h3>ViewModel in ASP.Net Coew MVC</h3><br>
+            
+        </p>
+    </p>
+</p>

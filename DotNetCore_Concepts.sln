@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore_Concepts", "DotNetCore_Concepts\DotNetCore_Concepts.csproj", "{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore_Concepts", "DotNetCore_Concepts\DotNetCore_Concepts.csproj", "{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp_Net_MVC", "Asp_Net_MVC\Asp_Net_MVC.csproj", "{41CDA38B-5465-435B-891F-7F9AC1C89997}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41CDA38B-5465-435B-891F-7F9AC1C89997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CDA38B-5465-435B-891F-7F9AC1C89997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41CDA38B-5465-435B-891F-7F9AC1C89997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41CDA38B-5465-435B-891F-7F9AC1C89997}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
