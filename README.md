@@ -127,7 +127,38 @@
         </p>
         <p>
             <h3>ViewModel in ASP.Net Coew MVC</h3><br>
-            
+            <p>
+                Some times the view that we pass to the view may not have complete details so we create a separate class to incorparate all the fields we need in the view is call View Model.
+            </p>
+            <p>
+                <b>Layout View</b><br>
+                Layout view helps to design a common look-and-feel page design. layout view will be in Shared folder under View folder.<br> Add new file and Search for Razor and select Razor Layout view<br>
+                Once we have Layout view, that will have all initial HTML elements so we can remove all the HTML initial element from our exsiting views.<br> Now we want to tell pages to use the layout view as follows
+                <pre>
+                    @{ 
+                        Layout = "~/Views/Shared/_Layout.cshtml";
+                        ViewBag.Title = "Employees List";
+                    }
+                </pre>
+                <br>
+                If you want to include a javascript file to every pages (views) we can smple create our javascript file under wwwroot/js foler and in Layout file we can specify the link before closing body tag, But if you want to include some javascript links only some specfic pages we need to specify that using <i>@RenderSection("Script")</i> just before closing body tag and in the particular page we need to have "Script" section. Suppose if you mentioned <i>@RenderSection("Script")</i> in Layout page and your view doesn't have "Script" section then we'll get a exception page so we can have that optional as follows <i>@RenderSection("Script", required:false) </i>.<br>
+                OR we can check if that section available using if statement and enable it <br>
+                <pre><i>
+                    @if (IsSectionDefined("Scripts"))
+                    {
+                        @RenderSection("Scripts", required: true)
+                    }
+                </i>
+                </pre>
+                Specifying section in the View pages
+                <pre>
+                    <i>
+                    @section Scripts{ 
+                        <script src="~/js/CustomScript.js"></script>
+                        }
+                    </i>
+                </pre>
+            </p>
         </p>
     </p>
 </p>

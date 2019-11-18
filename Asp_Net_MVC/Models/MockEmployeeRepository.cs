@@ -18,6 +18,12 @@ namespace Asp_Net_MVC.Models
                 new Employee{Id = 3, Name = "Sam", Department = "IT", Email = "sam@test.com" }
             };
         }
+
+        public IEnumerable<Employee> Get()
+        {
+            return _employee.ToList();
+        }
+
         public Employee GetEmpoyee(int Id)
         {
             return _employee.FirstOrDefault(e => e.Id == Id);

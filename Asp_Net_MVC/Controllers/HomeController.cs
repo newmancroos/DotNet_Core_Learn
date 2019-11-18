@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Asp_Net_MVC.Models;
+using Asp_Net_MVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,11 @@ namespace Asp_Net_MVC.Controllers
         {
             _employeeRepository = employeeRepository;
         }
-        public string Index()
+        public ViewResult Index()
         {
-           return _employeeRepository.GetEmpoyee(1).Name;
+            //return _employeeRepository.GetEmpoyee(1).Name;
+            var model = _employeeRepository.Get();
+            return View(model);
         }
 
         //public JsonResult Details()
@@ -65,9 +68,16 @@ namespace Asp_Net_MVC.Controllers
         }
         public ViewResult UsingStronglyType()
         {
-            var employee = _employeeRepository.GetEmpoyee(1);
-            ViewBag.PageTitle = "Employee Details";
-            return View(employee);
+            //var employee = _employeeRepository.GetEmpoyee(1);
+            //ViewBag.PageTitle = "Employee Details";
+            /////ViewModel Sample
+            //return View(employee);
+            HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+            {
+                Employee = _employeeRepository.GetEmpoyee(1),
+                PageTitle = "EmployeeDetails"
+            };
+            return View(homeDetailsViewModel);
         }
 
     }
