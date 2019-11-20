@@ -1,6 +1,8 @@
-﻿@model IEnumerable<Asp_Net_MVC.Models.Employee>
-@{ 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@*@model IEnumerable<Asp_Net_MVC.Models.Employee>*@
+@model IEnumerable<Employee>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    //ViewStart page will do this automatically
     ViewBag.Title = "Employees List";
 }
 <table>
@@ -13,13 +15,16 @@
     </thead>
     <tbody>
         @foreach (var employee in Model)
-        { 
-        <tr>
-            <td>@employee.Id</td>
-            <td>@employee.Name</td>
-            <td>@employee.Department</td>
-        </tr>
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Name</td>
+                <td>@employee.Department</td>
+            </tr>
         }
     </tbody>
 
 </table>
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

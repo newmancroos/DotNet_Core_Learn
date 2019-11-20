@@ -158,7 +158,69 @@
                         }
                     </i>
                 </pre>
+                <br>
+                <b>Setting Layout view in a common place:(ViewStart: _ViewStart.cshtml)</b><br>
+                ViewStart is a separate razor page under View directory. ViewStart file may come in any position, in View folder or sub folder of views folder. And we can change the Layout file within a page so we can use different Layout file like,
+                Layout = "_Layout2" <br> or if you don't want to use any layout page then we can say <i>Layout = null;</i>
+                <br><p><b>ViewImport:</b>
+                <br>
+                    If we have common namespace for all pages, using ViewImport we can specify all common namespace so that we don't want to indutually specify in all view pages.
+                    ex: lets say in a view page we are using a model like below
+                    <pre>
+                        @model Asp_Net_MVC.ViewModels.HomeDetailsViewModel
+                    </pre>
+                    and may pages using the same namespace "Asp_Net_MVC.ViewModels", instead of repeating same namespace in all pages we can create ViewImport view and can specify all th namespace and only class will be there in the view @model reference live 
+                    <pre>
+                        @using Asp_Net_MVC.ViewModels
+                    </pre>
+                    We can also place ViewImport file in the views subdirectory so inner viewimport override outer viewimport configuration.
+                </p>
             </p>
+        </p>
+        <p>
+            <h3>Routing</h3>
+            <p>
+                We have 
+                <ol>
+                    <li>Conventional Routing</li>
+                    <li>Attribute Routing</li>
+                </ol>
+                <br>
+                In conventional routing we configure the routing in the stratup.cs like <br>
+                <pre>
+                    app.UseMvcWithDefaultRoute();
+                    app.UseMvc(routes => {
+                        routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    });
+                </pre>
+                here Home default controller and Index is the default action method on the Home controller.
+                <br>
+                In Attribute route we configure it in the controller level.<br>
+                We can use <i>[Route("Home/Details/{id}")]</i> to define a route parameter. If you want to use a optional parameter route then
+                <pre>
+                    [Route("Home/UsingStronglyType/{id?}")]
+                    public ViewResult UsingStronglyType(int? id)
+                    {
+                        HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+                        {
+                            Employee = _employeeRepository.GetEmpoyee(id??1),
+                            PageTitle = "EmployeeDetails"
+                        };
+                        return View(homeDetailsViewModel);
+                    }
+                </pre>
+                Also if you want mvc automatically assign route attributes to the controller/action/parametr we can specify the route as 
+                <pre>
+                    [Route("[controller]/[action]/{id?}")]
+                    public ViewResult UsingStronglyType(int? id)
+                </pre>
+                We can also specify this in the controller level so that we don't want to repeat it in the method level, as below
+                <pre>
+                     [Route("[controller]/[action]")]
+                     public class HomeController : Controller
+                </pre>
+            </p>
+
         </p>
     </p>
 </p>
