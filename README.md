@@ -52,3 +52,175 @@
        </p>
     </p>
 </p>
+<p>
+    <h2>ASP.NET MVC</h2>
+    <p>
+        A controller method can returns ObjectResult, HttpResponse, JSonResult or ViewResult. Since we create MVC application controller method returns ViewResult. ex return View(Object). <br>
+        When we return View from controller, it check wether we have a .cshtml page under the following directories (Let assumt our controller is Home and Mthod is Details)
+        <br>
+        <ul>
+            <li>/Views/Home/Details.cshtml</li>
+            <li>/Views/Shared/Details.cshtml</li>
+            <li>/Pages/Shared/Details.cshtml</li>
+        </ul>
+        <br>
+        Let say we have Two controller and methods on it and the view directory structure as follows<br>
+        <p>
+            <ul>
+                <li>Employee Controller<ul>
+							<li>Details</li>
+							<li>Edit</li>
+							<li>List</li>
+						</ul>
+				</li>
+				<li>Home Controller
+					<ul>
+						<li>Details</li>
+						<li>Edit</li>
+						<li>Index</li>
+					</ul>
+				</li>
+			</ul>
+			Then View directory will be <br>
+				View -> Employee -> Details.cshtml, Edit.cshtml,List.cshtml <br>
+				View -> Home -> Details.cshtml, Edit.cshtml, Index.cshtml
+        </p>
+        <p>
+            By default mvc expect view same as the action method but we can change this conversion.<br>
+                <i>return View("ViewName", ObjectModel)</i> <br>
+            Also View can also have our view anywhere and specify the absolute path when call the view
+            <i>return View("Myviews/Test.cshtml"); </i>
+        </p>
+        <p>
+            <h3>Passing data to View</3>
+            We can pass data to view in three ways
+            <ul>
+                <li>ViewData</li>
+                <li>ViewBag</li>
+                <li>Strongly Typed View</li>
+            </ul>
+            <b>View Data : </b> <br>
+                      -> ViewData["Employee"] =objEmployee;<br>
+                      -> ViewData["PageTitle"] = "Employee Details";<br>
+            return View();<br>
+            From cshtml side we can read these data <br>
+            @{
+                var employee = ViewData["Employee] as Asp_Net_MVC_.Model.Employee;
+            }
+            Then displau it using Name @employee.Name <br>
+             <b>View Bag : </b> <br>
+              ViewBag is a wrapper around ViewData here we can use dynamic property.<br>
+              ViewBag.Employee = objEmployee; <br>
+              <i>ViewBag.title = "Employee Details";</i></br>
+              Also when we display fields we can use like <br>
+              ViewBag.Title <br> and we don't want to type cast objects to its type but we can directly use <br>
+              <i>ViewBag.Employee.Name</i>
+        </p>
+        <p>ViewData and ViewBag are loosely typed view</p>
+        <p>
+           <b>Strongly Typed View : </b> <br>
+           We can directly pass object to the view in the return View statement like <br>
+           return View(employee);<br>
+           and from view side we need to include @model directive on top of the page like <br>
+            @model Mysample.Models.Employee<br>
+            Now my model is strongly type and when we say @Model.Name  -> we'll get the intellisence.
+        </p>
+        <p>
+            <h3>ViewModel in ASP.Net Coew MVC</h3><br>
+            <p>
+                Some times the view that we pass to the view may not have complete details so we create a separate class to incorparate all the fields we need in the view is call View Model.
+            </p>
+            <p>
+                <b>Layout View</b><br>
+                Layout view helps to design a common look-and-feel page design. layout view will be in Shared folder under View folder.<br> Add new file and Search for Razor and select Razor Layout view<br>
+                Once we have Layout view, that will have all initial HTML elements so we can remove all the HTML initial element from our exsiting views.<br> Now we want to tell pages to use the layout view as follows
+                <pre>
+                    @{ 
+                        Layout = "~/Views/Shared/_Layout.cshtml";
+                        ViewBag.Title = "Employees List";
+                    }
+                </pre>
+                <br>
+                If you want to include a javascript file to every pages (views) we can smple create our javascript file under wwwroot/js foler and in Layout file we can specify the link before closing body tag, But if you want to include some javascript links only some specfic pages we need to specify that using <i>@RenderSection("Script")</i> just before closing body tag and in the particular page we need to have "Script" section. Suppose if you mentioned <i>@RenderSection("Script")</i> in Layout page and your view doesn't have "Script" section then we'll get a exception page so we can have that optional as follows <i>@RenderSection("Script", required:false) </i>.<br>
+                OR we can check if that section available using if statement and enable it <br>
+                <pre><i>
+                    @if (IsSectionDefined("Scripts"))
+                    {
+                        @RenderSection("Scripts", required: true)
+                    }
+                </i>
+                </pre>
+                Specifying section in the View pages
+                <pre>
+                    <i>
+                    @section Scripts{ 
+                        <script src="~/js/CustomScript.js"></script>
+                        }
+                    </i>
+                </pre>
+                <br>
+                <b>Setting Layout view in a common place:(ViewStart: _ViewStart.cshtml)</b><br>
+                ViewStart is a separate razor page under View directory. ViewStart file may come in any position, in View folder or sub folder of views folder. And we can change the Layout file within a page so we can use different Layout file like,
+                Layout = "_Layout2" <br> or if you don't want to use any layout page then we can say <i>Layout = null;</i>
+                <br><p><b>ViewImport:</b>
+                <br>
+                    If we have common namespace for all pages, using ViewImport we can specify all common namespace so that we don't want to indutually specify in all view pages.
+                    ex: lets say in a view page we are using a model like below
+                    <pre>
+                        @model Asp_Net_MVC.ViewModels.HomeDetailsViewModel
+                    </pre>
+                    and may pages using the same namespace "Asp_Net_MVC.ViewModels", instead of repeating same namespace in all pages we can create ViewImport view and can specify all th namespace and only class will be there in the view @model reference live 
+                    <pre>
+                        @using Asp_Net_MVC.ViewModels
+                    </pre>
+                    We can also place ViewImport file in the views subdirectory so inner viewimport override outer viewimport configuration.
+                </p>
+            </p>
+        </p>
+        <p>
+            <h3>Routing</h3>
+            <p>
+                We have 
+                <ol>
+                    <li>Conventional Routing</li>
+                    <li>Attribute Routing</li>
+                </ol>
+                <br>
+                In conventional routing we configure the routing in the stratup.cs like <br>
+                <pre>
+                    app.UseMvcWithDefaultRoute();
+                    app.UseMvc(routes => {
+                        routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    });
+                </pre>
+                here Home default controller and Index is the default action method on the Home controller.
+                <br>
+                In Attribute route we configure it in the controller level.<br>
+                We can use <i>[Route("Home/Details/{id}")]</i> to define a route parameter. If you want to use a optional parameter route then
+                <pre>
+                    [Route("Home/UsingStronglyType/{id?}")]
+                    public ViewResult UsingStronglyType(int? id)
+                    {
+                        HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+                        {
+                            Employee = _employeeRepository.GetEmpoyee(id??1),
+                            PageTitle = "EmployeeDetails"
+                        };
+                        return View(homeDetailsViewModel);
+                    }
+                </pre>
+                Also if you want mvc automatically assign route attributes to the controller/action/parametr we can specify the route as 
+                <pre>
+                    [Route("[controller]/[action]/{id?}")]
+                    public ViewResult UsingStronglyType(int? id)
+                </pre>
+                We can also specify this in the controller level so that we don't want to repeat it in the method level, as below
+                <pre>
+                     [Route("[controller]/[action]")]
+                     public class HomeController : Controller
+                </pre>
+            </p>
+
+        </p>
+    </p>
+</p>
