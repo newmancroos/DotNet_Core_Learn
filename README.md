@@ -358,12 +358,11 @@
                                 <li>Form Tag Helper</li>
                                 <li>Input Tag Helper (Input asp-for="Field name of model")</li>
                                 <li>Label tag Helper(lable asp-for="Field name of model")</li>
-                                <li>Select Tag Helper</li>
+                                <li>Select Tag Helper(asp-items="Html.GetEnumSelectList<Dept>()")</li>
                                 <li>TextArea Tag Helper</li>
                                 <li>Validation Tag Helper</li>
                             </ul><br>
                             Here we are going to see Form Tag Helper<br>
-
                </p>
         </p>
     </p>
