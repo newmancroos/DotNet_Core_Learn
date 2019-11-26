@@ -6,5 +6,6 @@ namespace Asp_Net_MVC.Models
     {
         Employee GetEmpoyee(int Id);
         IEnumerable<Employee> Get();
+        Employee Add(Employee employee);
     }
 }
