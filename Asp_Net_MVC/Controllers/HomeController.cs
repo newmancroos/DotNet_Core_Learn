@@ -26,7 +26,7 @@ namespace Asp_Net_MVC.Controllers
         public ViewResult Index()
         {
             //return _employeeRepository.GetEmpoyee(1).Name;
-            var model = _employeeRepository.Get();
+            var model = _employeeRepository.GetAllEmployee();
             return View(model);
         }
 
@@ -110,10 +110,15 @@ namespace Asp_Net_MVC.Controllers
         }
 
         [HttpPost]
-        public RedirectToActionResult Create(Employee employee)
+        //public RedirectToActionResult Create(Employee employee)
+        public IActionResult Create(Employee employee)
         {
-            Employee newEmployee =  _employeeRepository.Add(employee);
-            return RedirectToAction("details", new { id = newEmployee.Id });
+            if(ModelState.IsValid)
+            { 
+                Employee newEmployee =  _employeeRepository.Add(employee);
+                return RedirectToAction("details", new { id = newEmployee.Id });
+            }
+            return View();
         }
     }
 }
