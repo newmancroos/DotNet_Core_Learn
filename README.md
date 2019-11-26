@@ -383,6 +383,7 @@
                <pre>
                @inject  IEmployeeRepository _empRepository;
                </pre>
+               We can inject any interface to the view page using inject key word.
                </p>
         </p>
     </p>
