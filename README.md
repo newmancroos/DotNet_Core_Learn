@@ -220,7 +220,151 @@
                      public class HomeController : Controller
                 </pre>
             </p>
+            <p>
+                <h3>
+                    Bootstrap
+                </h3>
+                <br>
+                We have many tool to install and use Client-Side packages like,
+                <ul>
+                    <li>Bower</li>
+                    <li>NPM</li>
+                    <li>WebPack </li>
+                    <li>LibMan>
+                </ul>
+                Here we are going to use <b>libman</b> for installing client-library<br>
+                Step to install Bootstrap from Visual studio is
+                <ol>
+                <li>Right click project and select "Add -> Client-Side Library"</li>
+                <li>leave cdnjs as provider and type Twitter...</li>
+                <li>From the filtered list select Twitter bootstarb</li>
+                <li>Make sure that Target Location is wwwroot/lib/twiiter-bootstrap/   --- (last directory may be in any name)</li>
+                <li>Click Install</li>
+                Now all the files are copied into wwwroot -> lib --> bootstrap folder.<br>
+                add libman.json file aded to the project. it is a config file. It is very same as package.json file.<br>
+                by editing this file we can manually install any files, like JQuery, etc...
+                <br>If you manually insert some library, when you same the project all added library will e download and placed it in the relevent directory. We can clean local files and restore then by right click on libman.json. This json file in intelligence enable, itwill display library by partially typing the name.<br>
+                Now we can refering any css file in our Layout.cshtml or any other view to style the web pages.
+            </p>
+            <p>
+            <h3>Tag Helpers</3>
+                Tag helper are server side component to create and render HTML elements.<br>
+                How to add reference to tag helper,
+                <pre>@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers</pre>
+                We need this Tag helpers all over all the pages so we can add it _ViewImpoert.cshtml.<br> 
+                Below are the method without using Tag helper
+                <pre>
+                    @Html.ActionLink("Text to appear in the link","Action Method","ControllerName", "routeParameters");
+                    @Html.ActionLink("View","details","home",new {id = employee.Id })
+                </pre>
+                but in here we can't use style classes so here we can use Tag Helper like below,
+                <pre>
+                    &lt;a href="@Url.Action("details", "home", new {id = employee.Id })"  class="btn btn-primary"&gt;View&lt;/a&gt;
+                </pre>
+                BUT Tag helper bit easy to handler
+                <pre>
+                     &lt;a asp-controller="home" asp-action="details", asp-route-id="@employee.Id"  class="btn btn-primary"&gt;View&lt;/a&gt;
+                </pre>
+                here asp-route-&lt;ParameterName=Value&gt; 
+                Example if you want to pass Id then <br>
+                here asp-route-id = 1;
+                <br>
+                    We have @HTML.ActionLink or @Url.Link or event direct a tag ways to perform the same operation then why do we specifically go for Tag helper? <br>
+                    Let say we have our default route configured in the startup like this<br>
+                    <pre>
+                        app.UseMvc(route => {
+                            route.MapRoute("default","{controller=Home}/{action=Index}/{id?});
+                        });
+                    </pre>
+                    This will works with all the method HTML.ActionLinke or URL.Link ornormal A tag. but let say if we adding our company name before controller like,
+                                        <pre>
+                        app.UseMvc(route => {
+                            route.MapRoute("default","MyCompany/{controller=Home}/{action=Index}/{id?});
+                        });
+                    </pre>
+                    so if we used other than Tag helper it will be fail because other methods doesn't add company name automatically before the controller but if we use Tag helper it will take the url and replace controller and method name along with the company name on it.
+                    <br>
+                    <h3>Image Helper</h3>
+                    when we use an image tag in a web page, if the image changes in the server side the server will display the old image from the cache. To tell the browser each time the page load fetch the image from the server we can disable cache from network menu of developer tool or we can add <i>asp-append-version= "true" </i> in the image tag like below,
+                    <pre>
+                    <img class="card-img-top" src="~/images/noImage.jpg" asp-append-version="true" />
+                    </pre>
+                    if you see the aource from the view Source we can notice a unique hash value will be added to the image tag that identify if the image changes from the server then load it from the server or else load it from the cache.<br>
+                    <h3>Environment Tag helper</h3>
+                    We use CDN for our production environment most of the time, let say if there is a problem in CDN server we need to load our  minified javascript or css from our location for our production environment. This si the situation the Environment Tag helper helps.<br>
+                    We can configure conditional reference for client library in MVC
+                    <ol>
+                        <li>Enviroment -> Include="production,staging,..."</li>
+                        <li>Environment -> Exclude="development,...</li>
+                    </ol>
+                    <pre>
+                        &lt;environment include="Development"&gt;
+                            &lt;link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" /&gt;
+                        &lt;/environment&gt; <br>
+                            &lt;environment exclude="Development"&gt;
+                            &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+                                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+                                crossorigin="anonymous" asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
+                                asp-fallback-test-class="sr-only"
+                                asp-fallback-test-property="position"
+                                asp-fallback-test-value="absolute"
+                                asp-suppress-fallback-integrity="true"&gt;
+                        &lt;/environment>
+                    </pre>
+                    What id <i>integrity param in link tag? It is a hash value that matches with the cdn content.if someone alter the css or hash value it will not process the css js from the cdn link<br>
+                    If a cdn server is down we can use <b><i>asp-fallback-href</i></b> param of <i>link</i> so that in case of cdn server down mvc uses the local version of minified file. Along with <i>asp-fallback-href</i> there other attributes are there in <i>link</i> element.
+                    <ul>
+                        <li>asp-fallback-href -> f cdn server down, takes the local file</li>
+                        <li>asp-fallback-test-class="sr-only" -> Test if sucessfull file download from cdn</li>
+                        <li>as-fallback-test-property="position"  -> Test if sucessfull file download from cdn</li>
+                        <li>asp-fallback-test-value="absolute"  -> Test if sucessfull file download from cdn</li>
+                        <li>asp-suppress-fallback-integrity="true" -> if cdn down, when using local file we don't need integrity check</li>
+                    </ul>
+                    <h3>Bootstrap Navigation</h3>
+                        <pre>
+                        &lt;div class=&quot;container&quot;&gt; &lt;nav class=&quot;navbar navbar-expand-sm bg-dark navbar-dark&quot;&gt; 
+                            &lt;a class=&quot;navbar-brand&quot; asp-action=&quot;index&quot; asp-controller=&quot;home&quot;&gt; 
+                                &lt;img src=&quot;~/images/employee.gif&quot; height=&quot;30&quot; width=&quot;30&quot; /&gt; 
+                            &lt;/a&gt; 
+                            &lt;button type=&quot;button&quot; class=&quot;navbar-toggler&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapsidleNavbar&quot;&gt; 
+                                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt; 
+                            &lt;/button&gt; 
+                            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;collapsidleNavbar&quot;&gt; 
+                                &lt;ul class=&quot;navbar-nav&quot;&gt; 
+                                    &lt;li class=&quot;nav-item&quot;&gt; 
+                                        &lt;a asp-action=&quot;index&quot; asp-controller=&quot;home&quot; class=&quot;nav-link&quot;&gt;
+                                        List
+                                        &lt;/a&gt; 
+                                    &lt;/li&gt; 
+                                    &lt;li class=&quot;nav-item&quot;&gt; 
+                                        &lt;a asp-action=&quot;create&quot; asp-controller=&quot;home&quot; class=&quot;nav-link&quot;&gt;
+                                        Create
+                                        &lt;/a&gt; 
+                                    &lt;/li&gt; 
+                                &lt;/ul&gt; 
+                            &lt;/div&gt; 
+                            &lt;/nav&gt; 
+                            &lt;div&gt; 
+                                @RenderBody() 
+                            &lt;/div&gt; 
+                            @*@if (IsSectionDefined(&quot;Scripts&quot;)) { @RenderSection(&quot;Scripts&quot;, required: true) }*@ 
+                            @RenderSection(&quot;Scripts&quot;, required: false) 
+                        &lt;/div&gt;
+                        </pre>
+                        <br>
+                        <h3>Form TagHelper</h3>
+                        Available importent tag helpers
+                            <ul>
+                                <li>Form Tag Helper</li>
+                                <li>Input Tag Helper (Input asp-for="Field name of model")</li>
+                                <li>Label tag Helper(lable asp-for="Field name of model")</li>
+                                <li>Select Tag Helper</li>
+                                <li>TextArea Tag Helper</li>
+                                <li>Validation Tag Helper</li>
+                            </ul><br>
+                            Here we are going to see Form Tag Helper<br>
 
+               </p>
         </p>
     </p>
 </p>
