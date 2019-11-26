@@ -19,7 +19,7 @@ namespace Asp_Net_MVC.Models
             };
         }
 
-        public IEnumerable<Employee> Get()
+        public IEnumerable<Employee> GetAllEmployee()
         {
             return _employee.ToList();
         }

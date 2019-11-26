@@ -364,6 +364,27 @@
                             </ul><br>
                             Here we are going to see Form Tag Helper<br>
                </p>
+               <p>
+                    <h3>Model Validation</h3>
+                    Since we create lable like <br>
+                    <pre>
+                    &lt;label asp-for="Email" class="col-sm-2 col-form-label"$gt;&lt;/label&gt;
+                    &lt;input asp-for="Email" class="form-control" placeholder="Email"&gt;
+                    </pre>
+                    here we said asp-for = "Email" in the lable that means we mapped model data field to the lable so if you configure
+                    <pre>
+                        [Display(Name ="Office Email")]
+                        public string Email { get; set; }
+                    </pre>
+                    that will change the lable text
+               </p>
+               <p>
+               We can also inject any interface into cshtml file as follows,
+               <pre>
+               @inject  IEmployeeRepository _empRepository;
+               </pre>
+               We can inject any interface to the view page using inject key word.
+               </p>
         </p>
     </p>
 </p>
