@@ -1,6 +1,8 @@
 using Asp_Net_MVC.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,8 +10,14 @@ namespace Asp_Net_MVC
 {
     public class Startup
     {
+        private IConfiguration _config;
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
             services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
             //services.AddMvc();
 

@@ -386,5 +386,24 @@
                We can inject any interface to the view page using inject key word.
                </p>
         </p>
+        <p>
+            <h3>Entity Framework</h3>
+            <b>EF</b> sites between <b>Domain & DbContext Classes and Database</b>. There are database providers to helps EF to communicate to the database. there are many database providers such as,<br>
+                Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Sqlite, Microsoft.EntityFrameworkCore.InMemory, Microsoft.EntityFrameworkCore.Cosmos, etc. <br> Complete list of database provider can be found in the link <br>
+                https://docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli <br>
+                Database providers sits between <b>EF</b> and <b>Database</b><br>
+                EF has common functionalities and methods to access all databases but database provider is the one which convert the EF functionalities into a particular database functionalities and commnuicate with the database.
+                <br>
+                <h4>Installation</h4>
+                We need Entity FrameworkCore, EntityFrameworkCore.SqlServer and EntityFramework Relational to be install to develop entity framework module. Instead ofinstalling these three packages, if we install
+                <b>Microsoft.EntityFrameworkCore.SqlServer</b> that has dependency package <b>Microsoft.EntityFrameworkCore.Relational</b> this has dependency <b> Microsoft.EntityFrameworkCore</b> so by installing Microsoft.EntityFrameworkCore.Sqlserver we get all three pacjages installed.
+                <br>
+                Creating DbContext instance in the stratup class have two options
+                    <ol>
+                        <li>services.AddDbContext</li>
+                        <li>services.AddDbContextPool</li>
+                    </ol>
+                    AddDbContextPool provide DbContext pooling and use extsing instance instead of create a new instance.
+        </p>
     </p>
 </p>
