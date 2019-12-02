@@ -18,14 +18,14 @@ namespace Asp_Net_MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
-            services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+            //services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+            services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
             //services.AddMvc();
 
-           services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+            services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

@@ -403,7 +403,41 @@
                         <li>services.AddDbContext</li>
                         <li>services.AddDbContextPool</li>
                     </ol>
-                    AddDbContextPool provide DbContext pooling and use extsing instance instead of create a new instance.
+                    AddDbContextPool provide DbContext pooling and use extsing instance instead of create a new instance. <br>
+                    <b>EF Core Migration : </b><br>
+                    In Package Manager Console we can run command to get about entity frame work sd follows <br>
+                    <i>get-Help about_entityframeworkcore</i><br>
+                    This will display list of command and description for that command<br>
+                    <ul>
+                        <li>Add-Migration       -   Adds a new migration.</li>
+                        <li>Drop-Database       -   Drops the database.</li>
+                        <li>Get-DbContext       -   Gets information about a DbContext type.</li>
+                        <li>Remove-Migration    -   Removes the last migration.</li>
+                        <li>Scaffold-DbContext  -   Scaffolds a DbContext and entity types for a database.</li>
+                        <li>Script-DbContext    -   Generates a SQL script from the current DbContext.</li>
+                        <li>Script-Migration    -   Generates a SQL script from migrations.</li>
+                        <li>Update-Database     -   Updates the database to a specified migration.</li>
+                    </ul>
+                    We can remove migration using "Remove_migration" and it will remove last migration that haven't yet applied to database.If you want to remove already migrated to database migration, use <br>
+                    <i>update-database [migration-name]</i> this will revert all the migration upto the specified migration name.<br>
+                    This will remove migration from database not in the migration directory for that we need to run <i>remove-migraton</i> command as may times times we need.
+                    <br>
+                    <h4>Seedning Data</h4><br>
+                    We can use OnModelCreating override mthod of DBContext class to seed our data.
+                    <pre>
+                        public static class ModelBuilderExtension
+                        {
+                            public static void Seed(this ModelBuilder modelBuilder)
+                            {
+                                modelBuilder.Entity&lt;Employee&gt;().HasData(
+                                new Employee { Id = 1, Name = "Newman Croos", Department = Dept.IT, Email = "newmancroos@gmail.com" },
+                                new Employee { Id = 2, Name = "John", Department = Dept.HR, Email = "john@gmail.com" }
+                                );
+                            }
+                        }
+                    </pre>
+                    <br>
+
         </p>
     </p>
 </p>
