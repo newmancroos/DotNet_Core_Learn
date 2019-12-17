@@ -31,10 +31,21 @@ namespace Asp_Net_MVC
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                //app.UseStatusCodePages(); //Displays simple 404 page 
+                //app.UseStatusCodePagesWithRedirects("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
+                //Both app.UseStatusCodePagesWithRedirects and UseStatusCodePagesWithReExecute are both as a end users.
+                // but internally the process of page is diferent.
+
+            }
 
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseMvc();
+            //app.UseMvc();
             //////All 4 method of Conventional routes will work. Since we use attribute routing some of them is commented
             /*
             app.UseEndpoints(endpoints =>

@@ -420,7 +420,7 @@
                     </ul>
                     We can remove migration using "Remove_migration" and it will remove last migration that haven't yet applied to database.If you want to remove already migrated to database migration, use <br>
                     <i>update-database [migration-name]</i> this will revert all the migration upto the specified migration name.<br>
-                    This will remove migration from database not in the migration directory for that we need to run <i>remove-migraton</i> command as may times times we need.
+                    This will remove migration from database not in the migration directory for that we need to run <i>remove-migraton</i> command as may times times we need. then if you want to correct it in the entity class.
                     <br>
                     <h4>Seedning Data</h4><br>
                     We can use OnModelCreating override mthod of DBContext class to seed our data.
@@ -437,7 +437,37 @@
                         }
                     </pre>
                     <br>
-
         </p>
+        <p>
+            <h3>404 Not Found</h3><br>
+            There are two type of 404 not found
+                <ol>
+                    <li>Requested record is not found in the database so find method return null</li>
+                    <li>Requested Route is not there in the application</li>
+                </ol>
+                For 1, we can create a Not found exception page related to the record user requested.
+                for Route not found we can implement Not found using middleware in the startup class. There are there kinds of StatusCode page rediect there,
+                <ol>
+                <li>UseStatusCodePages  - This will simply displays a pages with simple 404 - not found erro rmessage</li>
+                <li>UseStatusCodePagesWithRediect - This will allows us to create a separate page to display all error messages by creating a controller and view</li>
+                <li>UseStatusCodePagesWithReExecute 0 this is also gives the same result as UseStatusCodePagesWithRedirect but intternally has some differences in the execution</li>
+                <br>
+                <b>What is the diferences between UseStatusCodePagesWithRedirect and UseStatusCodePagesWithReExecute></b><br>
+                <li>
+                    When we call a non existence route the following stages of executions happended in the request pipeline(Configure method of startup.cs)<br>
+                    <ol>
+                        <li>Requested url request comes to env.IsDevelopment() since it is not development environment the control goes to else part and to app.UseStatusCodPages[....]() method(s), at this point there is not status of the page so it transfer the control to UseStaticFile but the request is not related to static file, finally it comes to app.UseMvc route part. this is the place it identifys these url in not exist.</li>
+                        <li>Status not for will be issued so the middle ware now travel in the backward direction and comes to app.UseStatusCodPages[....]() method(s) here it rediect the call to '/Error/{0}'  that means there is the url is temporarly change to "/Error/{0}' (status 302) and page redirect to "/Eror/{0}"</li>
+                        <li>Now the redirect request flow thru same pipeline and then reaches to app.UseMvc  route and then calls "/Error/{0} controller method.</li>
+                        <li>There is actual 404 response in Redirect method call we convert it to another controller method call and return error page. <b>We lost actual 404 error when we use app.UseStatusCodPagesRedirect</b></li>
+                        <li>But in the app.UseStatusCodPagesReExecute method we achived the same result as end user but we get 404 status along with error page.</li>
+                        <li>Process flow of app.UseStatusCodPagesReExecute is same as app.UseStatusCodPagesRedirect but when going back to non development environment condition the request comes to route with 200 status but app.UseStatusCodPagesReExecute will replce the 200 with 404 and render the page.
+                        Also importently when we use app.UseStatusCodPagesReExecute the url (wrong url) what we gave is remain in the url bar of the browser, this will not change to "/Error/{0} like app.UseStatusCodPagesRedirect</li>
+                    </ol>
+                </li>
+        </p>
+        <p>
+            <h3>Global Exception Handler</h3><br>
+            
     </p>
 </p>

@@ -67,9 +67,16 @@ namespace Asp_Net_MVC.Controllers
 
             //return View(employee);
 
+            throw new Exception("Exception Occured");
+            Employee employee = _employeeRepository.GetEmpoyee(id.Value);
+            if (employee == null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound", id.Value);
+            }
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = _employeeRepository.GetEmpoyee(id ?? 1),
+                Employee = employee,
                 PageTitle = "EmployeeDetails"
             };
             return View(homeDetailsViewModel);

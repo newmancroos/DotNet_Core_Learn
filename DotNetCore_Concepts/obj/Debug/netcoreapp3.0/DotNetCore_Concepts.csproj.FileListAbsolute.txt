@@ -43,7 +43,6 @@ C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\bin\Debug\netcoreapp3.0\Do
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\bin\Debug\netcoreapp3.0\DotNetCore_Concepts.runtimeconfig.dev.json
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\bin\Debug\netcoreapp3.0\DotNetCore_Concepts.dll
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\bin\Debug\netcoreapp3.0\DotNetCore_Concepts.pdb
-C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.csprojAssemblyReference.cache
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\staticwebassets\DotNetCore_Concepts.StaticWebAssets.Manifest.cache
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\staticwebassets\DotNetCore_Concepts.StaticWebAssets.xml
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.MvcApplicationPartsAssemblyInfo.cache
