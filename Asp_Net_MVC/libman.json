@@ -11,8 +11,8 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "library": "jquery@3.4.1",
-      "destination": "wwwroot/lib/jquery/"
+      "library": "fullcalendar@4.2.0",
+      "destination": "wwwroot/fullcalendar/"
     }
   ]
 }

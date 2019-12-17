@@ -386,5 +386,88 @@
                We can inject any interface to the view page using inject key word.
                </p>
         </p>
+        <p>
+            <h3>Entity Framework</h3>
+            <b>EF</b> sites between <b>Domain & DbContext Classes and Database</b>. There are database providers to helps EF to communicate to the database. there are many database providers such as,<br>
+                Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Sqlite, Microsoft.EntityFrameworkCore.InMemory, Microsoft.EntityFrameworkCore.Cosmos, etc. <br> Complete list of database provider can be found in the link <br>
+                https://docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli <br>
+                Database providers sits between <b>EF</b> and <b>Database</b><br>
+                EF has common functionalities and methods to access all databases but database provider is the one which convert the EF functionalities into a particular database functionalities and commnuicate with the database.
+                <br>
+                <h4>Installation</h4>
+                We need Entity FrameworkCore, EntityFrameworkCore.SqlServer and EntityFramework Relational to be install to develop entity framework module. Instead ofinstalling these three packages, if we install
+                <b>Microsoft.EntityFrameworkCore.SqlServer</b> that has dependency package <b>Microsoft.EntityFrameworkCore.Relational</b> this has dependency <b> Microsoft.EntityFrameworkCore</b> so by installing Microsoft.EntityFrameworkCore.Sqlserver we get all three pacjages installed.
+                <br>
+                Creating DbContext instance in the stratup class have two options
+                    <ol>
+                        <li>services.AddDbContext</li>
+                        <li>services.AddDbContextPool</li>
+                    </ol>
+                    AddDbContextPool provide DbContext pooling and use extsing instance instead of create a new instance. <br>
+                    <b>EF Core Migration : </b><br>
+                    In Package Manager Console we can run command to get about entity frame work sd follows <br>
+                    <i>get-Help about_entityframeworkcore</i><br>
+                    This will display list of command and description for that command<br>
+                    <ul>
+                        <li>Add-Migration       -   Adds a new migration.</li>
+                        <li>Drop-Database       -   Drops the database.</li>
+                        <li>Get-DbContext       -   Gets information about a DbContext type.</li>
+                        <li>Remove-Migration    -   Removes the last migration.</li>
+                        <li>Scaffold-DbContext  -   Scaffolds a DbContext and entity types for a database.</li>
+                        <li>Script-DbContext    -   Generates a SQL script from the current DbContext.</li>
+                        <li>Script-Migration    -   Generates a SQL script from migrations.</li>
+                        <li>Update-Database     -   Updates the database to a specified migration.</li>
+                    </ul>
+                    We can remove migration using "Remove_migration" and it will remove last migration that haven't yet applied to database.If you want to remove already migrated to database migration, use <br>
+                    <i>update-database [migration-name]</i> this will revert all the migration upto the specified migration name.<br>
+                    This will remove migration from database not in the migration directory for that we need to run <i>remove-migraton</i> command as may times times we need. then if you want to correct it in the entity class.
+                    <br>
+                    <h4>Seedning Data</h4><br>
+                    We can use OnModelCreating override mthod of DBContext class to seed our data.
+                    <pre>
+                        public static class ModelBuilderExtension
+                        {
+                            public static void Seed(this ModelBuilder modelBuilder)
+                            {
+                                modelBuilder.Entity&lt;Employee&gt;().HasData(
+                                new Employee { Id = 1, Name = "Newman Croos", Department = Dept.IT, Email = "newmancroos@gmail.com" },
+                                new Employee { Id = 2, Name = "John", Department = Dept.HR, Email = "john@gmail.com" }
+                                );
+                            }
+                        }
+                    </pre>
+                    <br>
+        </p>
+        <p>
+            <h3>404 Not Found</h3><br>
+            There are two type of 404 not found
+                <ol>
+                    <li>Requested record is not found in the database so find method return null</li>
+                    <li>Requested Route is not there in the application</li>
+                </ol>
+                For 1, we can create a Not found exception page related to the record user requested.
+                for Route not found we can implement Not found using middleware in the startup class. There are there kinds of StatusCode page rediect there,
+                <ol>
+                <li>UseStatusCodePages  - This will simply displays a pages with simple 404 - not found erro rmessage</li>
+                <li>UseStatusCodePagesWithRediect - This will allows us to create a separate page to display all error messages by creating a controller and view</li>
+                <li>UseStatusCodePagesWithReExecute 0 this is also gives the same result as UseStatusCodePagesWithRedirect but intternally has some differences in the execution</li>
+                <br>
+                <b>What is the diferences between UseStatusCodePagesWithRedirect and UseStatusCodePagesWithReExecute></b><br>
+                <li>
+                    When we call a non existence route the following stages of executions happended in the request pipeline(Configure method of startup.cs)<br>
+                    <ol>
+                        <li>Requested url request comes to env.IsDevelopment() since it is not development environment the control goes to else part and to app.UseStatusCodPages[....]() method(s), at this point there is not status of the page so it transfer the control to UseStaticFile but the request is not related to static file, finally it comes to app.UseMvc route part. this is the place it identifys these url in not exist.</li>
+                        <li>Status not for will be issued so the middle ware now travel in the backward direction and comes to app.UseStatusCodPages[....]() method(s) here it rediect the call to '/Error/{0}'  that means there is the url is temporarly change to "/Error/{0}' (status 302) and page redirect to "/Eror/{0}"</li>
+                        <li>Now the redirect request flow thru same pipeline and then reaches to app.UseMvc  route and then calls "/Error/{0} controller method.</li>
+                        <li>There is actual 404 response in Redirect method call we convert it to another controller method call and return error page. <b>We lost actual 404 error when we use app.UseStatusCodPagesRedirect</b></li>
+                        <li>But in the app.UseStatusCodPagesReExecute method we achived the same result as end user but we get 404 status along with error page.</li>
+                        <li>Process flow of app.UseStatusCodPagesReExecute is same as app.UseStatusCodPagesRedirect but when going back to non development environment condition the request comes to route with 200 status but app.UseStatusCodPagesReExecute will replce the 200 with 404 and render the page.
+                        Also importently when we use app.UseStatusCodPagesReExecute the url (wrong url) what we gave is remain in the url bar of the browser, this will not change to "/Error/{0} like app.UseStatusCodPagesRedirect</li>
+                    </ol>
+                </li>
+        </p>
+        <p>
+            <h3>Global Exception Handler</h3><br>
+            
     </p>
 </p>

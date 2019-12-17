@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore_Concepts", "DotNetCore_Concepts\DotNetCore_Concepts.csproj", "{0F9A37CD-4B62-4AAF-B0DD-B6AE22BE3D6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp_Net_MVC", "Asp_Net_MVC\Asp_Net_MVC.csproj", "{41CDA38B-5465-435B-891F-7F9AC1C89997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp_Net_MVC", "Asp_Net_MVC\Asp_Net_MVC.csproj", "{41CDA38B-5465-435B-891F-7F9AC1C89997}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

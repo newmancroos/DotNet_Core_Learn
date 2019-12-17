@@ -24,15 +24,37 @@ namespace Asp_Net_MVC.Models
             return _employee.ToList();
         }
 
-        public Employee GetEmpoyee(int Id)
+        public Employee GetEmpoyee(int id)
         {
-            return _employee.FirstOrDefault(e => e.Id == Id);
+            return _employee.FirstOrDefault(e => e.Id == id);
         }
         public Employee Add(Employee employee)
         {
             employee.Id = _employee.Max(x => x.Id) + 1;
             _employee.Add(employee);
             return employee;
+        }
+
+        public Employee Delete(int id)
+        {
+            var emp = _employee.FirstOrDefault(x => x.Id == id);
+            if (emp != null)
+            {
+                _employee.Remove(emp);
+            }
+            return emp;
+        }
+
+        public Employee Update(Employee employee)
+        {
+            var emp = _employee.FirstOrDefault(x => x.Id == employee.Id);
+            if (emp != null)
+            {
+                emp.Name = employee.Name;
+                emp.Email = employee.Email;
+                emp.Department = employee.Department;
+            }
+            return emp;
         }
     }
 }

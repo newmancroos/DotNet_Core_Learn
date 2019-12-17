@@ -1,0 +1,25 @@
+﻿<div>Full Calendar Sample</div>
+<div id="calendar"></div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+<link href="~/fullcalendar/core/main.css" rel="stylesheet" />
+<link href="~/fullcalendar/list/main.css" rel="stylesheet" />
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+
+
+
+
+    @*<script src="~/fullcalendar/moment/main.js"></script>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/fullcalendar/core/main.js"></script>
+    <script src="~/fullcalendar/list/main.js"></script>
+    <script src="~/fullcalendar/daygrid/main.js"></script>
+    <script src="~/fullcalendar/timegrid/main.js"></script>
+    <script src="~/fullcalendar/interaction/main.js"></script>*@
+
+    <script>
+        $("#calendar").fullCalendar();
+    </script>
+}
