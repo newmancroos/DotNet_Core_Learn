@@ -468,6 +468,53 @@
         </p>
         <p>
             <h3>Global Exception Handler</h3><br>
-            
+            <p>
+                If you run the project all the execution steps will be output in the output windows if we disable all the entry by uncheck from Tools - Options - Debugs - output window we will not get any entries in the output windows.<br>
+                If we change appsettings.json Logging - Microsoft to Information now output windows will display Microsoft information related logging where we can find our sql query too.<br>
+                <strong>How these debug logging happen?</strong><br>
+                We have something called <b>Logging Providers</b>, these logging providers physically store or display log.<br>
+                Built in Logging providers: <br>
+                <ul>
+                    <li>Console Logging provider  - Display logs on console window</li>
+                    <li>Debug Logging Provider - Display logs on Debug window in Visual studio</li>
+                    <li>Event Source Provider</li>
+                    <li>Event Log Provider</li>
+                    <li>TraceSource Provider</li>
+                    <li>AzureAppServiceFile Provider</li>
+                    <li>AzureAppServiceBlob Provider</li>
+                    <li>ApplicationInsights Provider</li>
+                </ul>
+                <br>
+                Third Party Logging Providers<br>:
+                <ul>
+                    <li>NLog</li>
+                    <li>elmah</li>
+                    <li>Serilog</li>
+                    <li>Sentry</li>
+                    <li>Gelf</li>
+                    <li>JSNLog</li>
+                    <li>KissLog.net</li>
+                    <li>Loggr</li>
+                </ul>
+            </p>
+            To use built in logging functionality, we can simply inject ILogger&lt;ClassName&gt; and then can log error, information etc..
+            The logg will be display in Output windows if you running from Visual studio and command prompt when you running from command line.
+            <p>
+            <b>Using NLog to log in files</b><br>
+                To use Nlog logging first we need to install Nuget package <b>Nlog.Web.AspNetCore</b>
+                Once we installed the nuget package we need to write the config file so create a new text file and rename it to <b>nlog.config</b> and add the following marup
+                <pre>
+                    &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+                    &lt;nlog xmlns="http:/www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+                    &lt;targets&gt;
+                        &lt;target name="allfile" xsi:type="File" fileName="c:\temp\nlog-all-${shortdate}.log" /&gt;
+                    &lt;/targets&gt;
+                    &lt;rules&gt;
+                        &lt;logger name="*" minlevel="Trace" writeTo="" allfile="" /&gt;
+                    &lt;/rules&gt;
+                    &lt;/nlog&gt;
+                </pre>
+            </p>
+
     </p>
 </p>

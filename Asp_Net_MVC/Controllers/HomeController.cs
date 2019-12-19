@@ -67,7 +67,7 @@ namespace Asp_Net_MVC.Controllers
 
             //return View(employee);
 
-            throw new Exception("Exception Occured");
+            throw new Exception("Exception Occured");   //Testing exception and logging
             Employee employee = _employeeRepository.GetEmpoyee(id.Value);
             if (employee == null)
             {
