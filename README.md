@@ -468,6 +468,94 @@
         </p>
         <p>
             <h3>Global Exception Handler</h3><br>
-            
+            <p>
+                If you run the project all the execution steps will be output in the output windows if we disable all the entry by uncheck from Tools - Options - Debugs - output window we will not get any entries in the output windows.<br>
+                If we change appsettings.json Logging - Microsoft to Information now output windows will display Microsoft information related logging where we can find our sql query too.<br>
+                <strong>How these debug logging happen?</strong><br>
+                We have something called <b>Logging Providers</b>, these logging providers physically store or display log.<br>
+                Built in Logging providers: <br>
+                <ul>
+                    <li>Console Logging provider  - Display logs on console window</li>
+                    <li>Debug Logging Provider - Display logs on Debug window in Visual studio</li>
+                    <li>Event Source Provider</li>
+                    <li>Event Log Provider</li>
+                    <li>TraceSource Provider</li>
+                    <li>AzureAppServiceFile Provider</li>
+                    <li>AzureAppServiceBlob Provider</li>
+                    <li>ApplicationInsights Provider</li>
+                </ul>
+                <br>
+                Third Party Logging Providers<br>:
+                <ul>
+                    <li>NLog</li>
+                    <li>elmah</li>
+                    <li>Serilog</li>
+                    <li>Sentry</li>
+                    <li>Gelf</li>
+                    <li>JSNLog</li>
+                    <li>KissLog.net</li>
+                    <li>Loggr</li>
+                </ul>
+            </p>
+            To use built in logging functionality, we can simply inject ILogger&lt;ClassName&gt; and then can log error, information etc..
+            The logg will be display in Output windows if you running from Visual studio and command prompt when you running from command line.
+            <p>
+            <b>Using NLog to log in files</b><br>
+                To use Nlog logging first we need to install Nuget package <b>Nlog.Web.AspNetCore</b>
+                Once we installed the nuget package we need to write the config file so create a new text file and rename it to <b>nlog.config</b> and add the following marup
+                <pre>
+                    &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+                    &lt;nlog xmlns="http:/www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+                        &lt;targets&gt;
+                            &lt;target name="allfile" xsi:type="File" fileName="c:\temp\nlog-all-${shortdate}.log" /&gt;
+                        &lt;/targets&gt;
+                        &lt;rules&gt;
+                            &lt;logger name="*" minlevel="Trace" writeTo="" allfile="" /&gt;
+                        &lt;/rules&gt;
+                    &lt;/nlog&gt;
+                </pre>
+                open property of nlog.config file and make <b>Copy to Output Directoty = Copyif Newer</b>
+                and then we need to add Nlog config to the program.cs. If we search <b> www.github.com/aspnet/aspnetcore </b> and search file <b>webhost.cs</b> there will be a funtion called <b>CreateDefaultBuilder</b> there we can find the <b>ConfigureLogging</b> extension method for configure <b>Console, Debug and EventSource</b> logging. We need to override this in our <b>programe.cs</b> like below.<br>
+                <pre>
+                    .ConfigureLogging((hostingContext, logging) =>
+                    {
+                        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                        logging.AddConsole();
+                        logging.AddDebug();
+                        logging.AddEventSourceLogger();
+                        logging.AddNLog();
+                    })
+                </pre>
+                now we can inject ILogger<ClassName> _logger and can log any information, error or warning.
+                If you want a class wants only log Warning then we can specify it in the appsetting.json as follows,
+                Let say HomeController only wants to log Warning, then in <b> appsetting.json - Logging - Loglevel -</b> add,
+                <b>"[ProjectName].Controllers.HomeController" : "Warning"</b>
+                Now eventhough if we log Information, Trace or Debug those will not be logged in to the log file.
+                <br>
+                We can also specify log category by logging provider, that mean we can say for <b>Logging provider "Debug" log only debug category logs ()All inbut provider (output, console, etc)</b> and logging provider Console log only Warning category log as follows,
+                <br>
+                <pre>
+                "Logging": {
+                            "Debug": {
+                            "LogLevel": {
+                                "Default": "Warning",
+                                "Asp_Net_MVC.Controllers.HomeController": "Warning",
+                                "Microsoft": "Warning"
+                                //"Microsoft.Hosting.Lifetime": "Information"
+                            }
+                            },
+                            "LogLevel": {
+                            "Default": "Trace",
+                            "Asp_Net_MVC.Controllers.HomeController": "Trace",
+                            "Microsoft": "Trace"
+                            //"Microsoft.Hosting.Lifetime": "Trace"
+                            }
+                        }
+                </pre>
+                here all inbuild logging provider will log only <b>Warning and above log category</b> and third part logging provider (NLog) log <b>Trace and above log category</b>
+            </p>
+    </p>
+    <p>
+        <h2>Asp.Net Core Identity</h2>
     </p>
 </p>

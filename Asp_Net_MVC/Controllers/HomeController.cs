@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Asp_Net_MVC.Models;
 using Asp_Net_MVC.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Asp_Net_MVC.Controllers
 {
@@ -20,10 +16,13 @@ namespace Asp_Net_MVC.Controllers
         //private readonly IHostingEnvironment _hostingEnvironment;
         //IHostingEnvironment is absolute need to to alternative
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironment)
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironment, ILogger<HomeController> logger)
         {
             _employeeRepository = employeeRepository;
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
         //[Route("")]
         //[Route("Home")]
@@ -67,7 +66,13 @@ namespace Asp_Net_MVC.Controllers
 
             //return View(employee);
 
-            throw new Exception("Exception Occured");
+            //throw new Exception("Exception Occured");   //Testing exception and logging
+            _logger.LogTrace("From Home Controller - Log Trace");
+            _logger.LogDebug("From Home Controller - Log Debug");
+            _logger.LogInformation("From Home Controller - Log Information");
+            _logger.LogWarning("From Home Controller - Log Warning");
+            _logger.LogError("From Home Controller - Log Error");
+            _logger.LogCritical("From Home Controller - Critical Log");
             Employee employee = _employeeRepository.GetEmpoyee(id.Value);
             if (employee == null)
             {

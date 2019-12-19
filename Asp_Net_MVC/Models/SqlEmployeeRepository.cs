@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace Asp_Net_MVC.Models
@@ -6,10 +7,12 @@ namespace Asp_Net_MVC.Models
     public class SqlEmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<SqlEmployeeRepository> _logger;
 
-        public SqlEmployeeRepository(AppDbContext context)
+        public SqlEmployeeRepository(AppDbContext context, ILogger<SqlEmployeeRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         public Employee Add(Employee employee)
         {
@@ -36,6 +39,7 @@ namespace Asp_Net_MVC.Models
 
         public Employee GetEmpoyee(int Id)
         {
+            _logger.LogInformation($"Get employee detail for id : {Id}");
             var emp = _context.Employees.Find(Id);
             return emp;
         }
