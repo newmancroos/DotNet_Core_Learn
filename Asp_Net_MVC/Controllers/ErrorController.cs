@@ -28,6 +28,7 @@ namespace Asp_Net_MVC.Controllers
                     //ViewBag.path = statusCodeResult.OriginalPath;
                     //ViewBag.QS = statusCodeResult.OriginalQueryString;
                     logger.LogWarning($"404 Error occured, path = {statusCodeResult.OriginalPath} and Query string {statusCodeResult.OriginalQueryString}");
+                    ViewBag.ExceptionMessage = $"404 Error occured, path = {statusCodeResult.OriginalPath} and Query string {statusCodeResult.OriginalQueryString}";
                     break;
             }
             return View("NotFound");
@@ -42,6 +43,7 @@ namespace Asp_Net_MVC.Controllers
             //ViewBag.ExceptionMessage = exeptionDetails.Error.Message;
             //ViewBag.Stacktrace = exeptionDetails.Error.StackTrace;
             logger.LogError($"The Path {exeptionDetails.Path} threw an exception {exeptionDetails.Error}");
+            ViewBag.ExceptionMessage = $"The Path {exeptionDetails.Path} threw an exception {exeptionDetails.Error}";
             return View("Error");
         }
     }

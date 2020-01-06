@@ -2,12 +2,14 @@
 using System.IO;
 using Asp_Net_MVC.Models;
 using Asp_Net_MVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Asp_Net_MVC.Controllers
 {
+    [Authorize]
     //[Route("Home")]
     //[Route("[controller]/[action]")]
     public class HomeController : Controller
@@ -30,6 +32,7 @@ namespace Asp_Net_MVC.Controllers
         //[Route("Index")]
         //[Route("~/")]  // this makes this method is a root default method so we can give http://Localhost:44340/ will display this view
         //[Authorize]
+        [AllowAnonymous]
         public ViewResult Index()
         {
             //return _employeeRepository.GetEmpoyee(1).Name;
@@ -55,6 +58,7 @@ namespace Asp_Net_MVC.Controllers
         //Since it is Mvc application we need to return view
         //[Route("Home/Details")]
         //[Route("Details")]
+        [AllowAnonymous]
         public ViewResult Details(int? id)
         {
             //var employee = _employeeRepository.GetEmpoyee(1);
