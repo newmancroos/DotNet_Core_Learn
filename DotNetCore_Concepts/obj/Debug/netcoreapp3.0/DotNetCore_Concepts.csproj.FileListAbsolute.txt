@@ -51,3 +51,4 @@ C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\Do
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.RazorTargetAssemblyInfo.cache
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.dll
 C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.pdb
+C:\Projects\Git\DotNet_Core_Learn\DotNetCore_Concepts\obj\Debug\netcoreapp3.0\DotNetCore_Concepts.csprojAssemblyReference.cache

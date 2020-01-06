@@ -1,6 +1,9 @@
 using Asp_Net_MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +25,30 @@ namespace Asp_Net_MVC
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
             //services.AddMvc();
 
-            services.AddMvc(option => option.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+            //Identity related
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //        .AddEntityFrameworkStores<AppDbContext>();
+
+            //This way too we can configure Identity options
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    options.Password.RequiredLength = 10;
+            //});
+            //----------------------------------------------------
+            services.AddMvc(options => {
+                ////This is to globally inser Authorize attribute. But good option is use controller level
+                //var policy = new AuthorizationPolicyBuilder()
+                //                .RequireAuthenticatedUser()
+                //                .Build();
+                //options.Filters.Add(new AuthorizeFilter(policy));
+                options.EnableEndpointRouting = false;
+                }).AddXmlSerializerFormatters();
         }
 
          public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -34,6 +60,7 @@ namespace Asp_Net_MVC
             else
             {
                 app.UseExceptionHandler("/Error");
+
                 //app.UseStatusCodePages(); //Displays simple 404 page 
                 //app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
@@ -57,6 +84,10 @@ namespace Asp_Net_MVC
 
 
             //app.UseMvcWithDefaultRoute();
+
+            //Identity related
+            app.UseAuthentication();
+            //-----------------------------
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");

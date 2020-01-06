@@ -557,5 +557,68 @@
     </p>
     <p>
         <h2>Asp.Net Core Identity</h2>
+        <div>
+            Asp.Net Core Identity gives the following supports
+            <ul>
+                <li>Create, Read, Update and Delete user accounts</li>
+                <li>Account information</li>
+                <li>Authentication and Authorization</li>
+                <li>Pasword Recovery</li>
+                <li>Two-factor authentication with SMS</li>
+                <li>Support external login providers like Microsoft, Facebook, Google etc</li>
+            </ul>
+            As first step for Identity, we need to make our <b>AppDbContext class inherited from IdentityDbContext</b> class instead DbContext class but internally IdentityDbContext class is inherited from DbContext class with additional classes like UserManager, RoleManager ect.<br>
+            In startup.cs we need to add <b>services.AddIdentity&lt;IdentityUser, IdentityRole&gt;</b> these IdentityUser and IdentityRole are part of IdentityDbContext.<br>
+            If need to additional field to the user table (IdentityUser has almost all fields) we can create our Userclass inherit from IdentityUser class and add additional fields and use that class during <b>services.AddIdentity&lt;IdentityUserNew, IdentityRole&gt;</b><br>
+            Now we need to specify the EntityFrameworkStore for the IdentityUser so the steps as follows
+            <ol>
+                <li>AppDbContext inherits from IdentityDbContext instead of DbContext</li>
+                <li>In Startup services.AddIdentity&lt;IdentityUser, IdentityRole&gt;().AddEntityFrameworkStore&lt;AppDbContext&;gt;();</li>
+                <li>In Configure method before UseMvc add <b>app.UseAuthentication();</b> </li>
+                <li>Add new migration for create Identity related tables in database</li>
+            </ol>
+            if get error while running add-migration add <b>base..OnModelCreating(modelBuilder);</b> in AppDbContext OnModelCreating method.<br> 
+        </div>
+        <div>
+            When we create user we can use UserManager&lt;IdentityUser&gt; to create user and SignInManager&lt;IdentityUser&gt; to login in the user. SignInManager has two parametrs one for the user and another for spcifing whether the user still login even after closing the brwser True will maintain the session even after closing the browser False signout the user once you close the browser.<br>
+        </div>
+        <div>
+            We can use IServiceCollection parameter of ConfigureServices method to configure the <b>IdentityOptions</b>, Identity Options contains many options that can be configure IdentityObject (user, password, claims etc)
+            for example we can change Password Option, Validating passowrd during creation of user has default password length, complexcity etc we can change thse option using
+            <pre>
+                services.Configure&lt;IdentityOptions&gt; (options => { options.Password.RequiredLength = 10;})
+            </pre>
+            same configuration we can change using
+            <pre>
+                services.AddIdentity&lt;IdentityUser, IdentityRole&gt;(options => options.Password.RequiredLength = 10;)
+            </pre>
+            <p>
+            For server side valdation we use data annotation in the viewmodel class but it will increase server round trip and server load so we can use client validation using JQuery. We need
+            <ol>
+                <li>JQuery.js</li>
+                <li>JQuery.Validate.js</li>
+                <li>jQuery.Validate.unobtrusive.js</li>
+            </ol>
+            here unobtrusive validator will take server side validation rule and validate client side, we don't write any custom or extra code here. These js file will take care of the client side validation.
+            </p>
+            <p>
+                Wee need to do some server side validation in this application for example when we create a user we need to validate a email is valid and not exist, for that we create a controllor method to validate email and return Json result, why we use Json result is ASP.Net core Mvc uses <b> Jquery Validate </b> to call server side vlidate function and Jquery Validate method expect a Json response from the server.<br>
+                To call this server side function we are going to <b>Remote</b> attribute in the <b>Email property</b> of the <b>RegisterViewModel</b> <b> [Remote(action: "IsEmailInUse", controller:"Account")] </b><br>
+                For remote validation we need the folowing client side libraries.
+            <ol>
+                <li>JQuery.js</li>
+                <li>JQuery.Validate.js</li>
+                <li>jQuery.Validate.unobtrusive.js</li>
+            </ol>
+            </p>
+            <p>
+                <h3>Custom Validation Attributes</h3>
+                We can inherit <b>ValidationAttribute</b> to create custome validation attribute.
+            </p>
+        </div>
+        <p>
+            To create addtional field in Identity user we can inherit IdnetityUser and add more field and replace all the IdentityUser to Created class (ex. ApplicationUser). The importent thing is we need to tell AppDBContext to inheritr IdentityDbContext,
+            <b>AppDbContext : IdentityDbContext&lt;ApplicationUser&gt; instead of <b>AppDbContext : IdentityDbContext</b>. 
+        </p>
     </p>
 </p>
