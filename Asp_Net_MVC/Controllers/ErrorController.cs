@@ -43,7 +43,7 @@ namespace Asp_Net_MVC.Controllers
             //ViewBag.ExceptionMessage = exeptionDetails.Error.Message;
             //ViewBag.Stacktrace = exeptionDetails.Error.StackTrace;
             logger.LogError($"The Path {exeptionDetails.Path} threw an exception {exeptionDetails.Error}");
-            ViewBag.ExceptionMessage = $"The Path {exeptionDetails.Path} threw an exception {exeptionDetails.Error}";
+            ViewBag.ExceptionMessage = $"Error Occured while processing your request. The suppot team is notified and we are working on the fix.";
             return View("Error");
         }
     }

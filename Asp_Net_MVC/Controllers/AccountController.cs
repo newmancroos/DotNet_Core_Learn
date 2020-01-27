@@ -48,6 +48,10 @@ namespace Asp_Net_MVC.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
@@ -102,6 +106,12 @@ namespace Asp_Net_MVC.Controllers
             {
                 return Json($"Email {email} is already in use");
             }
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

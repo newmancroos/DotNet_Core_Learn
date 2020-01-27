@@ -620,5 +620,69 @@
             To create addtional field in Identity user we can inherit IdnetityUser and add more field and replace all the IdentityUser to Created class (ex. ApplicationUser). The importent thing is we need to tell AppDBContext to inheritr IdentityDbContext,
             <b>AppDbContext : IdentityDbContext&lt;ApplicationUser&gt; instead of <b>AppDbContext : IdentityDbContext</b>. 
         </p>
+        <div>
+            <h2><u>Role Bases Authorization</u></h2>
+            <p>
+                Once we logged in then using [Authorize] is basic authorization. If we need a role authorization we need to specify
+                [Authorize(Role="Admin")] here Role is the admin and login user should blongs to Admin group.<br>
+                For hiding administration menu from the non admin user we can put <br>
+                <b>signInManger.IsSignedIn(User) and User.IsInRole("Administrator) </b> check and have our admin menu with this condition.
+            </p>
+        </div>
+        <div>
+            <h2><u>Claim Base Authorization</u></h2>
+            There are two simple steps to implement Claim based authorization
+                <ol>
+                    <li>Create Claims Policy</li>
+                    <li>Use te policy for authorization checks</li>
+                </ol>
+                Claims are policy based that mean we create policy and add some claims on it. then need to register the claim policy.
+                <pre>
+                    services.AddAuthorization(options =&gt;
+                    {
+                        options.AddPolicy("DeleteRolePolicy",
+                            policy =&gt; policy.RequireClaim("Delete Role")
+                                            .RequireClaim("Create Role"));
+                    });
+                </pre>
+                now we can use it in controller method like
+                <pre>
+                    [Authorize(Policy = "DeleteRolePolicy")]
+                </pre>
+                <pre>
+                Role is also type of claims so we can get the claim type role as follows,
+                User.Claims.Where(x =&gt; x.Type == ClaimTypes.Role)
+                </pre>
+                same way we can add roles in a policy like below
+                <pre>
+                    services.AddAuthorization(options =&gt;
+                    {
+                        options.AddPolicy("AdminRolePolicy",
+                            policy =&gt; policy.RequireRole("Admin, Test Role");
+                    });
+                </pre>
+                when we show/hide admini menu for the user we inject SignInManager&lt;ApplicationUser&gt; like below,
+                <pre>
+                    @using Microsoft.AspNetCore.Identity
+                    @inject SingnInManager&lt;ApplicationUser&gt; SignInManager;
+                </pre>
+                and then have a code block to check if the user is logged in and has admin role like below,
+                <pre>
+                    @if(SgnInManger.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        Manage Like here
+                    }
+                </pre>
+                Lets take an example a user <b>A</b> has <b>admin role</b> with <b>only Create User role<b> not <b> Delete User and Edit User Role</b> as per our coding since he has admin role edit and delete user button is enabled. We need to disable Edit and Delete button by checking his Policy,
+                <pre>
+                    @using Microsoft.AspNetCore.Authorization
+                    @inject IAuthorizationService authorizationService
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    {
+                        &lt;a class="btn btn-primary" asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id"&gt;Edit&lt;/a&gt;
+                    }
+                </pre>
+        </div>
     </p>
 </p>
+ 
