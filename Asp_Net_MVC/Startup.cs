@@ -41,6 +41,36 @@ namespace Asp_Net_MVC
             //    options.Password.RequiredLength = 10;
             //});
             //----------------------------------------------------
+            //-----Claim Base Authorization------------------------
+            //services.AddAuthorization(options =>
+            //    {
+            //        options.AddPolicy("DeleteRolePolicy",
+            //            policy => policy.RequireClaim("Delete Role")
+            //                            .RequireClaim("Create Role"));
+            //    });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role"));
+              });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.RequireClaim("Edit Role"));
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireRole("Administrator"));
+            });
+
+            //Change default access denied redirect path, also we have many options to change 
+            // Login route, logour route.....
+            services.ConfigureApplicationCookie(options => {
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/administration/accessdenied");
+            });
+            //------------------------------------------------------
+
             services.AddMvc(options => {
                 ////This is to globally inser Authorize attribute. But good option is use controller level
                 //var policy = new AuthorizationPolicyBuilder()
