@@ -63,6 +63,12 @@ namespace Asp_Net_MVC
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Administrator"));
             });
+
+            //Change default access denied redirect path, also we have many options to change 
+            // Login route, logour route.....
+            services.ConfigureApplicationCookie(options => {
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/administration/accessdenied");
+            });
             //------------------------------------------------------
 
             services.AddMvc(options => {

@@ -61,6 +61,7 @@ namespace Asp_Net_MVC.Controllers
             return View(roles);
         }
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -428,6 +429,14 @@ namespace Asp_Net_MVC.Controllers
             }
 
             return RedirectToAction("EditUser", new { Id = model.UserId });
+        }
+
+        //Moved it to Admnistration controller
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

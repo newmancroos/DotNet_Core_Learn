@@ -682,6 +682,15 @@
                         &lt;a class="btn btn-primary" asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id"&gt;Edit&lt;/a&gt;
                     }
                 </pre>
+                When we browse to a url that we have no access Asp.Net will automatically redireect to <b>/Account/AccessDenied</b> route. If you want to change this default behavior we can change it thru Startup.css --- ConfigureServices method like below,
+                <pre>
+                    //Change default access denied redirect path, also we have many options to change 
+                    // Login route, logour route.....
+                    services.ConfigureApplicationCookie(options =&gt; {
+                        options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/administration/accessdenied");
+                    });
+                </pre>
+                in this case the access denied controller method and access denied view should be there under administration controller and view.
         </div>
     </p>
 </p>
