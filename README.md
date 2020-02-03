@@ -776,7 +776,7 @@
                         </pre>
                         AND
                         <pre>
-                                    services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();      
+                                    services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();      
                         </pre>
                         Here we have a requirement with one handler but a Requirement may have more than one handler also,
                     </p>
@@ -784,6 +784,10 @@
                     <b>Why do we need multiple handler for a requirement?</b>
                         Lets say We have OR condition, in our example a admin with Edit claim can edit the role OR a super admin can edit the role. so to implemnent these condition we can have two handlers one for (Admin and Edit Claim) another handler for (Super Admin). Once we create a second handler we need to register it in the startup.cs and we are good to go.
                     </p>
+                    <pre>
+                                    services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();   
+                                    services.AddSingleton&lt;IAuthorizationHandler, SuperAdminHandler&gt;();   
+                    </pre>
             </p>
         </div>
     </p>
