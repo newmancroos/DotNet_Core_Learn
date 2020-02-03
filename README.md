@@ -777,7 +777,7 @@
                         AND
                         <pre>
                                     services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();      
-                        <pre>
+                        </pre>
                         Here we have a requirement with one handler but a Requirement may have more than one handler also,
                     </p>
                     <p>
