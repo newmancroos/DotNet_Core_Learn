@@ -691,7 +691,100 @@
                     });
                 </pre>
                 in this case the access denied controller method and access denied view should be there under administration controller and view.
+                <p>
+                    All the above claim based authorization we have used only <b>Claim Type</b> not claim type with claim value.
+                    for example : <br>
+                    <pre>
+                        services.AddAuthorization(options =&gt;
+                        {
+                            options.AddPolicy("EditRolePolicy",
+                                policy =&gt; policy.RequireClaim("Edit Role"));
+                        });
+                    </pre>
+                    here what we defined a policy such a way that if a user has claimtype "Edit Role" we defined a policy.We are not using the claim value.<br>
+                    So we are going to change the saving part of the claim. If you select a claim for a user we are going to save true for that claim else false.
+                    we can change the start up class as below
+                    <pre>
+                        services.AddAuthorization(options =&gt;
+                        {
+                            options.AddPolicy("EditRolePolicy",
+                                policy => policy.RequireClaim("Edit Role", "true"));
+                        });
+                    </pre>
+                    and manage user claim as below
+                    <pre>
+                        if (existingUserClaims.Any(x => x.Type == claim.Type && x.Value == "true")) 
+                        {
+                            userClaim.IsSelected = true;
+                        }
+                    </pre>
+                    we can also use any value for claim value not neccssaryly use "true" or "false";
+                    <pre>
+                        services.AddAuthorization(options =>
+                        {
+                            options.AddPolicy("AllowedCountryPolicy",
+                                policy => policy.RequireClaim("Countries", "India", "USA", "UK"));
+                        });
+                    </pre>
+                    here Countries is policy type and "India", "USA" and "UK" are values.
+                </p>
+        </div>
+        <div>
+            <h3>Custom Authorization</h3>
+            <p>
+                <u>Why do we need custom authorization?<br>
+                Lets consider a situation, We have List role and edit role, for now for editing a role a user need
+                Admin role and EditPolicy, suppose if need the condition like this, To edit a role a user need <b>(Admin Rol + EditPoly)</b> or <b>superadmin role</b>
+                <pre>
+                    services.AddAuthorization("EditRolePolicy", policy =&gt; 
+                    policy.RequireRole("Admin")
+                          .RequireClaim("Edit Role", "true", "Yes") // Edit Role value should be treu or yes
+                          .RequireRole("Super Admin"));
+                </pre>
+                <b>BUT THIS WILL NOT WORK, BECAUSE THESE STATING THE A USER MUST REQUIRE "Ediy Role", EditRolePolicy AND Super admin role</b>
+                This is the situation we go for custome authorization.
+            </p>
+            <p>
+                <b>Custom authorization using Func(RequireAssertion)</b>
+                so for being adminitrator or super admin we can't use RequireRole or RequireClaim directly so we use <b>RequireAssertion</b>
+                <pre>
+                    services.AddAuthorization(options =&gt;
+                    {
+                        options.AddPolicy("AdminRolePolicy",
+                                policy =&gt; policy.RequireRole("Administrator"));
+                        options.AddPolicy("EditRolePolicy",
+                            policy =&gt; policy.RequireAssertion(context =&gt;
+                            context.User.IsInRole("Administrator") && 
+                            context.User.HasClaim(claim => claim.Type ==  "Edit Role" && claim.Value == "true") ||
+                            context.User.IsInRole("Super Admin")
+                            ));
+                    });
+                </pre>
+                here, with role (administrator and claim Edit Role) OR role (Super Admin) a user can edit User role
+            </p>
+            <p>
+                <b>Custom Authorization Requirement and Handler </b>
+                <p>
+                    To build custom authorization we need to create Requirement by inheriting <b>IAuthorizationRequirement </b> inteface, it is an empty interface doesn't have any methods.Then need Authorization handler which inherite Authorization requirement and have authorization logic in the handler.</p>
+                    <p>For custome authorization attribute we need to create <b>custom requirement and handler</b></p>
+                    <p>
+                        To create cutome authorization attribut we create a requirement class by inheriting <b>IAuthorizationRequirement</b> inter face and to create handler we create a class by inheriting <b>AuthorizationHandler<T></b> class.
+                        where T is type of requirement and then we need to register these custome authorization requirement and Handler in strtup.cs
+                        <pre>
+                                options.AddPolicy("EditRolePolicy",
+                                policy =&gt; policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+                        </pre>
+                        AND
+                        <pre>
+                                    services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();      
+                        <pre>
+                        Here we have a requirement with one handler but a Requirement may have more than one handler also,
+                    </p>
+                    <p>
+                    <b>Why do we need multiple handler for a requirement?</b>
+                        Lets say We have OR condition, in our example a admin with Edit claim can edit the role OR a super admin can edit the role. so to implemnent these condition we can have two handlers one for (Admin and Edit Claim) another handler for (Super Admin). Once we create a second handler we need to register it in the startup.cs and we are good to go.
+                    </p>
+            </p>
         </div>
     </p>
 </p>
- 
