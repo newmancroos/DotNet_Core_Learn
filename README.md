@@ -776,7 +776,7 @@
                         </pre>
                         AND
                         <pre>
-                                    services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();      
+                            services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();      
                         </pre>
                         Here we have a requirement with one handler but a Requirement may have more than one handler also,
                     </p>
@@ -785,8 +785,19 @@
                         Lets say We have OR condition, in our example a admin with Edit claim can edit the role OR a super admin can edit the role. so to implemnent these condition we can have two handlers one for (Admin and Edit Claim) another handler for (Super Admin). Once we create a second handler we need to register it in the startup.cs and we are good to go.
                     </p>
                     <pre>
-                                    services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();   
-                                    services.AddSingleton&lt;IAuthorizationHandler, SuperAdminHandler&gt;();   
+                        services.AddSingleton&lt;IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler&gt;();   
+                        services.AddSingleton&lt;IAuthorizationHandler, SuperAdminHandler&gt;();   
+                    </pre>
+                    A handler can return Success, Failure or nothing. Failure take over the success that means if we have two handler and one f them is failed then even though other handler return success the final result is failure.<br> In this situation if you have second handler, it will be called and what ever the result if the first one failed the final result wil be failure. If you want to stop execution of second handler if the first handler failed then you can explicitly call InvokeHandlerAfterFailure = false the default value is true. this setup should be there in the ConfigureServices method of startup class.
+                    <pre>
+                        services.AdAuthorization(options =&gt;
+                        {
+                            options.AddPolicy("EditRolePolicy", policy =&gt;
+                            {
+                                policy.AdRequirement(new ManageAdminRoleClaimPolicyRequirement());
+                                options.InvokeHandlersAfterFailure =false;
+                            })
+                        })
                     </pre>
             </p>
         </div>
