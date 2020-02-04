@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Asp_Net_MVC.Controllers
 {
    // [Authorize(Roles ="Administrator")]
-   [Authorize(Policy = "AdminRolePolicy")]
+   //[Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -61,7 +61,7 @@ namespace Asp_Net_MVC.Controllers
             return View(roles);
         }
         [HttpGet]
-        [Authorize(Policy = "EditRolePolicy")]
+        //[Authorize(Policy = "EditRolePolicy")]   //Moved to ManageRole as custom attribute
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -215,7 +215,7 @@ namespace Asp_Net_MVC.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 City = user.City,
-                Claims = userClaims.Select(c =>c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
                 Roles = userRoles
             };
 
@@ -304,6 +304,7 @@ namespace Asp_Net_MVC.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.UserId = userId;
@@ -339,6 +340,7 @@ namespace Asp_Net_MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             ViewBag.UserId = userId;
@@ -391,7 +393,7 @@ namespace Asp_Net_MVC.Controllers
                     ClaimType = claim.Type
                 };
 
-                if (existingUserClaims.Any(x => x.Type == claim.Type)) 
+                if (existingUserClaims.Any(x => x.Type == claim.Type && x.Value == "true")) 
                 {
                     userClaim.IsSelected = true;
                 }
@@ -420,7 +422,8 @@ namespace Asp_Net_MVC.Controllers
                 return View(model);
             }
 
-            result = await userManager.AddClaimsAsync(user, model.Claims.Where(x => x.IsSelected).Select(c => new Claim ( c.ClaimType, c.ClaimType )));
+            //result = await userManager.AddClaimsAsync(user, model.Claims.Where(x => x.IsSelected).Select(c => new Claim ( c.ClaimType, c.ClaimType )));
+            result = await userManager.AddClaimsAsync(user, model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected? "true" : "false")));
 
             if (!result.Succeeded)
             {
