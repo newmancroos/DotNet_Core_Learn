@@ -1,4 +1,5 @@
 # Learn .Net Core Concepts
+
 <h2>What is InProcess and OutProcess in the .csproj file?</h2>
 <p>
     When CreateDefaultBuilder() method in the programm.cs calls UseIIS() method and host the app inside the IIS worker process (W3wp.exe or iisexpress.exe)
@@ -801,5 +802,20 @@
                     </pre>
             </p>
         </div>
+    </p>
+    <p>
+        <h1>Entity Framework Scaffolding from existing database</h1>
+        <ul>
+            <li>
+                Install "Microsoft.EntityFrameworkCore.Design" and "Microsoft.EntityFrameworkCore.SqlServer"
+            </li>
+            <li>
+                For scaffolding we need to install a tool called "dotnet-ef" <br/>  <b>dotnet tool install -global dotnet-ef</b> 
+            </li>
+            <li>
+                Now we are ready to scaffolding the database using below command line execution. Now if you run <b>dotnet ef</b> you'll get a ef tool introduction. to scaffolding,(Ned to run this command within project folder) <br/>
+                <b>dotnet ef dbcontext scaffold "|ConnectionString|" Microsoft.EntityFrameworkCore.SqlServer -d -c |DbContextName| --context-dir EfStructures -o Entities</b>
+            </li>
+        </ul>
     </p>
 </p>
