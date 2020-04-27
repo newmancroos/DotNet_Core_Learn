@@ -830,14 +830,16 @@
                 var changeRow = _context.Changetracker.Entries().First();
                 </i>
             </pre>
-            This will changed row.
+            This will return changed row.
         </p>
         <p>
             We can select rows from DbContext as no tracking so that when we pull large amount of data with notracking we can have good performance.
-            <i>
-                var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5)AsNoTracking();
-                var changeRow = _context.Changetracker.Entries().First();
-            </i>
+            <pre>
+                <i>
+                    var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5)AsNoTracking();
+                    var changeRow = _context.Changetracker.Entries().First();
+                </i>
+            </pre>
             Here it will not return anything becase we inist No tracking
         </p>
         <p></p>
