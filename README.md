@@ -836,7 +836,7 @@
             We can select rows from DbContext as no tracking so that when we pull large amount of data with notracking we can have good performance.
             <pre>
                 <i>
-                    var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5)AsNoTracking();
+                    var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5).AsNoTracking();
                     var changeRow = _context.Changetracker.Entries().First();
                 </i>
             </pre>
