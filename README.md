@@ -842,6 +842,50 @@
             </pre>
             Here it will not return anything becase we inist No tracking
         </p>
-        <p></p>
+        <p>
+            <h2>Querying Data</h2>
+            When we writing a query it will not execute all situations
+            <pre>
+                //Nothing Happens
+                IQueryable&lt;Person&gt; query = _context.Person.AsQueryable();
+                //Now Query Executes
+                var List&lt;Person&gt; = query.ToList();
+                //Also here
+                foreach(var person in query)
+                {}
+                //Also here
+                var person = query.FirstOrDefault();
+                //Also here
+                var person = query.SingleOrDefault(x => x.BusinessEntity == 1);
+                //And Here
+                var person = _query.Find(1);
+            </pre>
+            Same way if you only <b>Where</b> condition without using <b>ToList</b> or <b>FirstOrDefault and ...</b> query will not execute so you can use multiple queries as below
+            <pre>
+                //All in one statement
+                var query1 = _context.Person.Where(x => x.PersonType == "em" && x.EmailPromotion == 1);
+                //Chained statement
+                var query2 = _context.Person.Where(x => x.PersonType == "em").Where( x => x.EmailPromotion == 1);
+                //Build up over disparate calls
+                var query3 - _context.Person.Where(x => x.PersonType == "em");
+                query3 = query3.Where(x => x.EmailPromotion ==1);
+                //Or's can't be chained ********  so we need to put "OR" like below
+                var query4 = _context.Person.Where (x => x.PersonType || x.EmailPromotion ==1)
+                //Added to this we can use funtions in the EF query; where list is List&lt;int&gt;
+                var query1 = _context.Person.Where(x => list.Contains(x.BusinessEntityId));
+                var query1 = _context.Person.Where(x => x.LastName.Contains("UF));
+                var query1 = _context.Person.Where(x => EF.Functions.Like(x.LastName, "UF%"));
+                var query1 = _context.Person.Where(x => EF.Functions.IsDate(x.DOB.ToString()));
+                //And Sum/Count/Average/Max/Min/Any/All
+                <br>
+                _context.Person.Find(1,234); //takes multiple keys
+                <br>
+                //FirstOrDefault will take first record of matching criteria
+                //SingleOrDefault will return single record if you have more record for the criteria will throw exception
+                //Skip(12).Take  //Always use OrderBy before Skip and Take
+                
+            </pre>
+        </p>
     </p>
+
 </p>
