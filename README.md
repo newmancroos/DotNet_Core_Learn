@@ -816,6 +816,30 @@
                 Now we are ready to scaffolding the database using below command line execution. Now if you run <b>dotnet ef</b> you'll get a ef tool introduction. to scaffolding,(Ned to run this command within project folder) <br/>
                 <b>dotnet ef dbcontext scaffold "|ConnectionString|" Microsoft.EntityFrameworkCore.SqlServer -d -c |DbContextName| --context-dir EfStructures -o Entities</b>
             </li>
+            <li>
+                We can run the above command as many times we need every time the scaffolding will replace entire classes if you get some error we can run the same comand with <b>--force</b> in the last
+            </li>
         </ul>
+        <p>
+        <h2>Tracking</h2>
+            We can select rows from DbContext as tracking so that when we pull data with notracking.
+            <pre>
+                <i>
+                var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5);
+                person.LastName ="Modified";
+                var changeRow = _context.Changetracker.Entries().First();
+                </i>
+            </pre>
+            This will changed row.
+        </p>
+        <p>
+            We can select rows from DbContext as no tracking so that when we pull large amount of data with notracking we can have good performance.
+            <i>
+                var person = _context.Person.Where(x =&gt; x.BusinessEntityId ==5)AsNoTracking();
+                var changeRow = _context.Changetracker.Entries().First();
+            </i>
+            Here it will not return anything becase we inist No tracking
+        </p>
+        <p></p>
     </p>
 </p>
