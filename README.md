@@ -883,7 +883,102 @@
                 //FirstOrDefault will take first record of matching criteria
                 //SingleOrDefault will return single record if you have more record for the criteria will throw exception
                 //Skip(12).Take  //Always use OrderBy before Skip and Take
-                
+            </pre>
+        </p>
+        <p>
+            <h2>Get Related Data</h2>
+            We can use Include, ThenInclude for getting related records
+            <pre>
+                //Implicily loading
+                //These queries are not yet run, we neet to include ToList or FirstOrDefault ....
+                //In Implicit loading all the related tables will be loaded
+                var person = _context.Person.Include(x =&gt; x.EmailAddress).Where(w =&gt; w.Id==1);
+                //Here Employee within Person and SalesPerson in side Employee
+                var person = _context.Person.Include(x =&gt; x.Employee).TheInclude(x =&gt; x.SalesPerson).Where(w =&gt; w.Id==1);
+                //This will execute the query
+                person.ToList();
+                //Explicitly Loading
+                //In Explicit loading we load the related table when really need it
+                var person = _context.Person.FirstOrDefault(x.BusinesEntityId == 1);
+                _context.Entry(p).Reference( p =&gt; p.Employee).Load();  // 1 => 1
+                _context.Entry(p).Collection(c =&gt; c.EmployeeAddress).Load(); // 1 => Many
+            </pre>
+            <br>
+                When we write projections, we can select data as Anonyamouse like
+                <pre>
+                    var Anno = _contect.Person.Select( x => {
+                        x.Firstname,
+                        x.LastName
+                    }).ToList()
+                </pre>
+                OR we can use strongly type POC object, Like
+                <pre>
+                    var emp = _context.Person.Select(  x => new PersonPoc{
+                        FirstName = x.FirstName,
+                        LastName = x.LastName
+                        }).ToList();
+                </pre>
+                The main difference is Anonymouse object cannot pass outside the method as return type but Strongly type object can be pass as return type.
+                <br>
+                Difference between <b>Select</b> and <b>SelectMany </b> is Select return IQueryable&lt;Collection&lt;Person&gt;&gt; but SelectMany return IQuerabl&lt;Person&gt;. SelectMany is easy to use in our query.
+                <pre>
+                    IQueryable&lt;ICollection&lt;Person&gt;&gt; persons = _context.Select(x =&gt; x.Id ==1);
+                    IQuerable&lt;Person&gt; persons = _context.Person.SelectMany(x =&gt; x.Id ==1);
+                </pre>
+        </p>
+        <p>
+            <h2>Persists Data into Database</h2>
+            DbContext itself maintaning a transaction. We can run all the update, add delete and then lastly we can call SaveChanges() method of DbContext. But for Integration test or some other purpose we can create a transaction and then run method under transaction like bellow,
+            <pre>
+                Public void ShouldExecuteInTransaction(Action actionToExecute)
+                {
+                    using(var transaction = _context.Database.BeginTraction())
+                    {
+                        actionToexecute();
+                        transaction.Commit();  //in the integration test we can make transaction.Rollback() 
+                                                //so that data will be rollback once method execute.
+                    }
+                }
+                public void AddItem()
+                {
+                    ShouldExecuteInTransaction(AddNewPerson);
+                    void AddNewPerson()
+                    {
+                        var person = new Person{
+                            AdditionalContactInfo ="Home",
+                            FirstName="Barney",
+                            LastName = "Rubble",
+                            Title= "Neighbor"
+                        }
+                        _context.Person.Add(person);
+                        _context.SaveChanges();
+                    }
+                }
+            </pre>
+            There are many whys to Edit ot Delete a entity
+            <pre>
+                internal EntityEntry DeleteEntry()
+                {
+                    var person = _context.Person.Find(1);
+                    //This is remove in momory data
+                    _context.Person.Remove(person);
+                    _context.SaveChanges();
+                    //OR
+                    //This remove database data
+                    //But in web world we dont need to remove in momory because each requets dbcontext loads from db.
+                    _context.Entry(person).State = EntityState.Deleted; // same way if the person is edit object 
+                                                                        //then we can say EntityState.Edited
+                    _context.SaveChanges();
+                    return _context.ChangeTracker.Entries.First();
+                }
+                internal EntityEntry DeleteEntry()
+                {
+                    var person = _context.Person.Find(1);
+                    person.LastName = "UpdatedName";
+                    _context.Person.Update(person);
+                    _context.SaveChanges();
+                    return _context.ChangeTracker.Entries.First();
+                }
             </pre>
         </p>
     </p>
