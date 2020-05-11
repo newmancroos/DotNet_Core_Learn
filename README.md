@@ -990,8 +990,17 @@
 	<p>
 		We have Pipe lines and Middleware. Every request goes thru set of middlewares while it passes we can perform some check or operation and decide wether we can pass it to next middleware or break the chinge and return the response.
 		On of the middle ware that run within MVC context it <b>MVC Action Filters pipeline</b> There are many action filter and order<br>
-			Authorization Filters -> Resource Filter -> <Model Binding> -> Action Filter -> <Action Execute> -> Exception Filters -> Result Filter -> (Result filter execute before and after each indivitual <b>Action method</b>) <br> Once Result filter execute the backward direction start and ignore all the filter and comes to Resource filter so If you want to Map anything to DTO object you can handle it in the resutlt filter.
-			<br>
-			We can customize <b>Result filter</b> inheriting <b>IResultFiler / IAsyncResultFilter</b> anf <b> ResultFiterAttribute</b>.
+        <ol>
+            <li>Authorization Filters</li>
+            <li>Resource Filter</li>
+            <li>&lt;Model Binding&gt;</li>
+            <li>Action Filter</li>
+            <li>&lt;Action Execute&gt;</li>
+            <li>Exception Filters</li>
+            <li>Result Filter</li>
+            <li>(Result filter execute before and after each indivitual <b>Action method</b>)</li>
+            <li>Once Result filter execute the backward direction start and ignore all the filter and comes to Resource filter so If you want to Map anything to DTO object you can handle it in the resutlt filter.</li>
+        </ol> <br>
+		We can customize <b>Result filter</b> inheriting <b>IResultFiler / IAsyncResultFilter</b> anf <b> ResultFiterAttribute</b>.
 	</p>
 </p>
