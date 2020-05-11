@@ -1,6 +1,9 @@
+using DotNetCore_Concepts.Entities;
+using DotNetCore_Concepts.Repoitories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +22,9 @@ namespace DotNetCore_Concepts
         //Register all your services
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+            services.AddScoped<IRepository<Employee>, Repository<Employee>>();
+
             //Added to use Controller
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
@@ -102,7 +108,6 @@ namespace DotNetCore_Concepts
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
-
         }
     }
 }
