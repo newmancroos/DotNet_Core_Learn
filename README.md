@@ -982,5 +982,16 @@
             </pre>
         </p>
     </p>
-
+	<p>
+		Normally when we write ASP.Net application, Load test is good for testing the the application scalability. The tool called
+		<b>WebSurge</b> is good for testing the load test. We can download it from <b>https://websurge.west-wind.com/</b>. <br>
+		Once we install it, open it and add our enpoint url and specify how many thread you want to use , ie, How many simultenious request has to be made and how many second we need to prolong th erequest. As a result we get how many request has been made for a second. We can compare this result with Synchronus calls.(If we written our request as async). 
+	</p>
+	<p>
+		We have Pipe lines and Middleware. Every request goes thru set of middlewares while it passes we can perform some check or operation and decide wether we can pass it to next middleware or break the chinge and return the response.
+		On of the middle ware that run within MVC context it <b>MVC Action Filters pipeline</b> There are many action filter and order<br>
+			Authorization Filters -> Resource Filter -> <Model Binding> -> Action Filter -> <Action Execute> -> Exception Filters -> Result Filter -> (Result filter execute before and after each indivitual <b>Action method</b>) <br> Once Result filter execute the backward direction start and ignore all the filter and comes to Resource filter so If you want to Map anything to DTO object you can handle it in the resutlt filter.
+			<br>
+			We can customize <b>Result filter</b> inheriting <b>IResultFiler / IAsyncResultFilter</b> anf <b> ResultFiterAttribute</b>.
+	</p>
 </p>
