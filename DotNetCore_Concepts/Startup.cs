@@ -19,6 +19,8 @@ namespace DotNetCore_Concepts
         //Register all your services
         public void ConfigureServices(IServiceCollection services)
         {
+            //Added to use Controller
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,20 +82,27 @@ namespace DotNetCore_Concepts
 
             //app.UseFileServer();
             //-----------------------------------------------------------------------------
-            app.UseStaticFiles();
-            app.Run(async (context) =>
+            ////app.UseStaticFiles();
+            ////app.Run(async (context) =>
+            ////{
+            ////    await context.Response.WriteAsync($"Hosting Environment: {env.EnvironmentName}");
+            ////   // throw new System.Exception("Some error processing the request"); //This exception will be thrown if app.UserFileServer not find any file requested.
+            ////    //await context.Response.WriteAsync("MW3 : Request handled and response produces");
+            ////});
+
+            //////Thismiddle ware is not reachable
+            ////app.Run(async (context) =>
+            ////{
+            ////    //Exception handling
+            ////    await context.Response.WriteAsync("My third middleware");
+            ////});
+            //------------------------------------------------------------------------------
+            
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync($"Hosting Environment: {env.EnvironmentName}");
-               // throw new System.Exception("Some error processing the request"); //This exception will be thrown if app.UserFileServer not find any file requested.
-                //await context.Response.WriteAsync("MW3 : Request handled and response produces");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //Thismiddle ware is not reachable
-            app.Run(async (context) =>
-            {
-                //Exception handling
-                await context.Response.WriteAsync("My third middleware");
-            });
         }
     }
 }
