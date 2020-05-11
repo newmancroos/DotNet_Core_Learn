@@ -10,6 +10,17 @@ namespace DotNetCore_Concepts.Filters
         public override async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
             var result = context.Result as ObjectResult;
+
+            //if (context.Result is ObjectResult objectResult && objectResult.Value == null)
+            //{
+            //    context.Result = new NotFoundResult();
+            //}
+
+            if (result.Value == null)
+            {
+                context.Result = new NotFoundResult();
+            }
+
             if (result?.Value == null || result.StatusCode < 200 || result.StatusCode >= 300)
             {
                 await next();
@@ -21,9 +32,10 @@ namespace DotNetCore_Concepts.Filters
             //{ 
             //    //Enumerable result
             //}
+            var objectResult = result.Value as User;
+            var fname = objectResult.FName;
 
-            var user = new User { Id = 3, FName = "Ria", LName = "Croos" };
-            //List<User> userobj =(List<User>) result;
+            var userobj =result;
             result.Value = new User { Id = 1, FName = "Newman", LName = "Croos" };
             await next();
             //return base.OnResultExecutionAsync(context, next);

@@ -18,10 +18,7 @@ namespace DotNetCore_Concepts.Controllers
         public async Task<ActionResult>  GetUser()
         {
             await Task.Delay(200);
-            return Ok(new List<User> {
-                new User{ Id=1, FName="Newman", LName="Croos"},
-                new User{ Id=2, FName="Nithin", LName="Croos"}
-            });
+            return Ok(new User{ Id=1, FName="Newman", LName="Croos"});
         }
 
         [HttpGet("getAll")]
