@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DotNetCore_Concepts.Mappings;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace DotNetCore_Concepts.Entities
@@ -8,9 +9,10 @@ namespace DotNetCore_Concepts.Entities
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { 
         }
-        public DbSet<Employee> Employees { get; set; }
+        //public DbSet<Employee> Employees { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new EmployeeMapping());
             base.OnModelCreating(modelBuilder);
         }
     }

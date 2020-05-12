@@ -1,3 +1,5 @@
+using AutoMapper;
+using DotNetCore_Concepts.AutoMappers;
 using DotNetCore_Concepts.Entities;
 using DotNetCore_Concepts.Repoitories;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +25,8 @@ namespace DotNetCore_Concepts
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+            services.AddAutoMapper(typeof(MappingProfile));
+            
             services.AddScoped<IRepository<Employee>, Repository<Employee>>();
 
             //Added to use Controller

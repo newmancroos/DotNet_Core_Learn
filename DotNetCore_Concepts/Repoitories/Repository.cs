@@ -12,6 +12,10 @@ namespace DotNetCore_Concepts.Repoitories
         Task<T> GetAsync(int id);
         List<T> GetAll();
         Task<List<T>> GetAllAsync();
+        void Add(T entity);
+        Task AddAsync(T entity);
+        void SaveChanges();
+        Task SaveChangesAsync();
     }
     public class Repository<T> : IRepository<T> where T : class
     {
@@ -39,6 +43,24 @@ namespace DotNetCore_Concepts.Repoitories
         public async Task<List<T>> GetAllAsync()
         {
             return await  DbSets.ToListAsync();
+        }
+
+        public void Add(T entity)
+        {
+            DbSets.Add(entity);
+        }
+        public async Task AddAsync(T entity)
+        {
+            await DbSets.AddAsync(entity);
+        }
+
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
