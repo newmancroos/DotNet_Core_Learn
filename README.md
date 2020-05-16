@@ -1028,6 +1028,157 @@
                     }
                 }
             </pre>
+            <p>
+                <h2>TransactionScope in Entity Framework Core</h2>
+                <p>
+                    Using TransactionScope is easy, warapping the database call with TransactionScope will provide easy way of maintening transaction
+                    <pre>
+                        using(var scope = new TransactionScoope())
+                        {
+                            var groups -myDbContext.ProductGroup.ToList();
+                            scope.Complelete();
+                        }
+                    </pre>
+                    but when we use <b>TransactionScope</b> in Async call bit problem. if you use
+                    <pre>
+                        using(var scope = new TransactionScoope())
+                        {
+                            var groups -myDbContext.ProductGroup.ToListAsync().ConfigureAwait(false);
+                            scope.Complelete();
+                        }
+                    </pre>
+                    will get <b>System.InvalidOperationException : TransactionScope must be dispose on the same thread that it was created</b> why??????????????/<br>
+                    Because <b>TransactionScope doesn't  flow from one thread to another by dfault</b> to fix this we need to add
+                    <i>TransactionScopeAsyncFlowOption.Enabled</i> option in the TransactionSctionScope like below,
+                    <pre>
+                        using(var scope = new TransactionScoope(TransactionScopeAsyncFlowOption.Enabled))
+                        {
+                            var groups -myDbContext.ProductGroup.ToListAsync().ConfigureAwait(false);
+                            scope.Complelete();
+                        }
+                    </pre>
+                    <br>
+                    If you a <b>BginTransaction</b> within TransactionScope block like below
+                    <pre>
+                        using(var scope = new TransactionScope())
+                        {
+                            Do():
+                        }
+                        public void Do()
+                        {
+                            using(var tx = Context.Database.BeginTransaction())
+                            {
+                                var groups = Context.ProductGroups.ToList();
+                            }
+                        }
+                    </pre>
+                    we will get  <i>Syste.InvalidOpterationException : An Ambien transaction has been detected. the ambien transaction needs to be completed be for beginning transaction on this connection</i> because <b>Do()</b> is 3rd party lib or a framework then method has be moved out of outer Transactionscope.
+                    <p>
+                        <h2>Using Multiple instances of DbContext</h2>
+                        Let say we have two different DbContext for two different dataases and using TransactionScope,
+                        <pre>
+                            using(var scope = new TransactionScope())
+                            {
+                                var groups = dbContext1.ProductGroups.ToList();
+                                var others = dbContext2.SomeEntity.ToList();
+                            }
+                        </pre>
+                        This use case is not supported in Asp.Net Core because here we need <b>Distributed Transaction Coordinator (MSDTC)</b> but .Net Core is multiplatform and other OS doesn't support DTS, .Net team dropped the support to <b>TransactionScope</b> for multi server databases.
+                    </p>
+                </p>
+                <p>
+                    <h2>Calling external Api from api</h2>
+                    Normally we can use <b>HttpClient</b> to call external service from our service but from .Net core 2.1 MS introduced
+                    <b>HttpClientFactory</b>, this is some kind of wrapper for Httpclient and we can register it in the startup.css so that we can easily inject it, so in Statrtup.cs
+                    <pre>
+                        services.AddHttpClient();
+                    </pre>
+                    and in some other classes ex
+                    <pre>
+                        public class Callingclass
+                        {
+                            private readonly IHttpClientFactory _clientFactory;
+                            public Claiingclass(IHttpClientFactory clientFactory)
+                            {
+                                _clientFactory = clientFactory;
+                            }
+                            public async Task<Book> GetBooks(string coverId)
+                            {
+                                var httpClient = _clientFactory.CreateClient();
+                                var response = await httpClient.GetAsync($"http://localhost/api/getbooks/{coverId}");
+                                if(response.IsSuccessStatusCode)
+                                {
+                                    return JsonConvert.DeserializeObject&lt;Book&gt;(await response.Content.ReadStringAsync());
+                                }
+                                return null;
+                            }
+                        }
+                    </pre>
+                    <b>
+                        Note: Normally we can return multiple values using <b>Tuple</b> in c#
+                        <pre>
+                            var propertyBag = Tuple&lt;Book,IEnumerable&lt;BookCover&gt;&gt;(book, bookCover);
+                            var _book = propertyBag.Item1;
+                            var _bookCover = propertyBag.Item2;
+                        </pre>
+                        <br>
+                        It is little dificut to use Item1, Item2 format. Fortunatly from C#7 MS introduce Named Tuple parameter
+                        <pre>
+                            (Book book, &lt;IEnumerable&lt;BookCover&gt;&gt; bookCover> propertyBag =(book, bookCover);
+                            var book = propertyBag.book;
+                            var bookCover = propertBag.bookCover;
+                        </pre>
+                        we also can pass Tuple as response to a web api
+                        <pre>
+                            return Ok((book:book, bookCover:bookCover));
+                        </pre>
+                        Now we can captuer these two in <b>ResultFilter</b> and form a single result and then pass as response. in ResultFilter
+                        <pre>
+                            var result = context.Result as ObjectResult;
+                            var (book, bookCover) = ((Book, IEnumberable&lt;BookCover&gt;)) result.Value;
+                            //Merge twi result as one and pass as response to the web api.
+                        </pre>
+                    </b>
+                </p>
+                <p>
+                    <h3>CancellationToken</h3>
+                    When we pass Cancellation token to mulple call and if one of then failt we can set <b>cancellationToke.Cancel</b> this will notify all other async calls and ends all the calls and release the thread to the pool.
+                    Normally we can set cancellationToken.Canel in the Catch portion of Try .. Catch block
+                </p>
+                <p>
+                    <h3>Exception in Async Calls</h3>
+                    When we cancel the task using cancellationToken the the main function that initiate the async call will get the exception ( OperationCancelledException)
+                    <p>
+                        var downloadBookCoverTasks = &lt;set of tasks added to execute&gt;
+                        //All task under this downloadBookCoverTasks has CancellationToken passed
+                        //If one of the method fails that method cancel the token so we'll get the exception
+                        private CancelationTokenSource cancellationTkenSource;
+                        CancelationTokenSource = new CancelationTokenSource();
+                        //Need to pass <b>CancelationTokenSource.Token</b> to each method that expect cancellation Token.
+                        try{
+                            return await Task.WhenAll(downloadBookCoverTasks);
+                        }
+                        catch(OperationCenceledException exception)
+                        {
+                            _logger.LogInformation($"{exception.Message}");
+                            foreach(var task in downloadBookCoverTasks)
+                            {
+                                _logger.LogInformation($"Task {task.Id} has status {task.Status});
+                            }
+                            return List&lt;BookCover&gt;();
+                        }
+                        but here we can get the particular exception wich was thrown by a method because we use Async. for getting that particular exception we have to use AggagateException
+                    </p>
+                </p>
+                <p>
+                    Note : 
+                        <ul>
+                            <li>We can run a long running synchronus job as Async using Task.Run(() =&gt;)</li>
+                            <li>We can call Async Mthod with Sync method using &lt;AsyncMethod()&gt;.Result, here we immediatly get the result as sync from Async method. this will block the Thread untile it complete it work and return result in Sync manner.<br> We canalso use &lt;AsyncMethod()&gt;.wait() to achive the same.</li>
+                        </ul>
+                </p>
+            </p>
         </p>
-	</p>
+    </p>
+
 </p>
