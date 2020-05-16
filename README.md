@@ -1177,6 +1177,22 @@
                             <li>We can call Async Mthod with Sync method using &lt;AsyncMethod()&gt;.Result, here we immediatly get the result as sync from Async method. this will block the Thread untile it complete it work and return result in Sync manner.<br> We canalso use &lt;AsyncMethod()&gt;.wait() to achive the same.</li>
                         </ul>
                 </p>
+                <p>
+                    <h3>Range operatior in c#</h3><br>
+                    <pre>
+                    void Main()
+                            {
+                                var stuff =new int[]{1,2,3,4,5,6,7};
+                                Console.WriteLine(String.Join(",", stuff));
+                                Console.WriteLine(String.Join(",", stuff[0..2])); // Starting 1 and length 2
+                                Console.WriteLine(String.Join(",", stuff[2..])); // Starting 3 end of array
+                                Console.WriteLine(String.Join(",", stuff[2..^1])); //Start at 3 end last but one
+                                //Creating sub array
+                                var b =new ArraySegment&lt;int&gt;(stuff, 0,2); // return sub array  start 0 and length 2
+                                Console.WriteLine(b[0]); // Return 1
+                            }
+                    </pre>
+                </p>
             </p>
         </p>
     </p>
