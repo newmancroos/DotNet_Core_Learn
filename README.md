@@ -1169,11 +1169,11 @@
                                                                     //that will be return by Task.Run
                                 });
                             </pre>
-                            But Using Task.Run() is not recommendaed because 
-                                    - Asp.Net Core is not optimized for Task.Run()
-                                    - It is intened to use in Client like Zamarin or some UI not on the Server.
+                            But Using Task.Run() is not recommendaed because <br>
+                                    - Asp.Net Core is not optimized for Task.Run()<br>
+                                    - It is intened to use in Client like Zamarin or some UI not on the Server.<br>
                         </b>
-                        In .Net we had SynchronizationContext to help managing Tread context but in asp.net core when we completely using async/wait so no need for Synchronizatio context, and we used ConfigureWait(false) to avoid dead lock but in asp.net core isn't neccessary any more due to not being a synchronizationContext.
+                        <i>In .Net we had SynchronizationContext to help managing Tread context but in asp.net core when we completely using async/wait so no need for Synchronizatio context, and we used ConfigureWait(false) to avoid dead lock but in asp.net core isn't neccessary any more due to not being a synchronizationContext.</i>
                     </p>
                 </p>
                 <p>
