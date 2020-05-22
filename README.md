@@ -1141,6 +1141,42 @@
                     </b>
                 </p>
                 <p>
+                    <h3>Asyn Concepts</h3><br>
+                    There are two types of work can happend in async world
+                    <ol>
+                        <li>
+                            I/O Bound: <br>
+                            If you ask your self a question
+                            <i>Will my code be waiting for a task to be complete before continuing</i> if yes then, it should be <b>I/O bound</b>. <br>
+                            Example : File syatem, database, network call etc.
+                        </li>
+                        <li>
+                            Computational Bound: <br>
+                            If you ask your self a question <i>Will my code be performing an expensive computation?</i> if yes then it should be <b>Computational bound</b> <br>
+                            Example : Running a big business logic.
+                        </li>
+                    </ol>
+                    Using async for Computational bound is not good idea.
+                    <p>
+                        <b>Note: <br>
+                            * When we select a record from a table we are doing I/O bound operation so we need to call it using Async but
+                            consider <i>dbContext.Add(book)</i>, here we are not making any database call instead we just add the book object to inmemory context so using Asyn is not good idea. When you create Repository don't write Add method as Async but create a separate method for <b>SaveChanges</b> ad make it as async.
+                            <br>
+                            * Using <b>Task.Run()</b> run a synchronus method as Asynchronus method.<br>
+                            <pre>
+                                var a = Task.Run(() => {
+                                    return _synCall.SomthMethod(); // this is some sync method retun some type 
+                                                                    //that will be return by Task.Run
+                                });
+                            </pre>
+                            But Using Task.Run() is not recommendaed because 
+                                    - Asp.Net Core is not optimized for Task.Run()
+                                    - It is intened to use in Client like Zamarin or some UI not on the Server.
+                        </b>
+                        In .Net we had SynchronizationContext to help managing Tread context but in asp.net core when we completely using async/wait so no need for Synchronizatio context, and we used ConfigureWait(false) to avoid dead lock but in asp.net core isn't neccessary any more due to not being a synchronizationContext.
+                    </p>
+                </p>
+                <p>
                     <h3>CancellationToken</h3>
                     When we pass Cancellation token to mulple call and if one of then failt we can set <b>cancellationToke.Cancel</b> this will notify all other async calls and ends all the calls and release the thread to the pool.
                     Normally we can set cancellationToken.Canel in the Catch portion of Try .. Catch block
@@ -1171,7 +1207,7 @@
                     </p>
                 </p>
                 <p>
-                    Note : 
+                    Note :
                         <ul>
                             <li>We can run a long running synchronus job as Async using Task.Run(() =&gt;)</li>
                             <li>We can call Async Mthod with Sync method using &lt;AsyncMethod()&gt;.Result, here we immediatly get the result as sync from Async method. this will block the Thread untile it complete it work and return result in Sync manner.<br> We canalso use &lt;AsyncMethod()&gt;.wait() to achive the same.</li>
