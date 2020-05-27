@@ -1232,5 +1232,22 @@
             </p>
         </p>
     </p>
-
+    <p>
+        <h2>Some Entity Framework performance tips</h2> <br>
+        <ul>
+            <li>
+                If we are not modify the resutl set we retrive from database, We can use <b>AsNoTracking</b>
+                <pre>
+                    Product = await _context.Products.AsNoTracing().FirstOrDefault(Id == 1);
+                </pre>
+            </li>
+            <li>
+                If need to write a direct query on a entity we can use <b>FromSqlInterpolated</b> so that EF will automatically parameterize the interpolated parameter, so We can avoid Sql Injection
+                <pre>
+                    Product = await _context.Products.FromSqlInterpolated($"Select * from product where Id = {id}")
+                    .ToAsyncList();
+                </pre>
+            </li>
+        </ul>
+    </p>
 </p>
