@@ -1250,4 +1250,44 @@
             </li>
         </ul>
     </p>
+    <p>
+        If you want to protect a collection being updated or added from outside class we can make it as IReadOnlyCollection<> so that we can prevent updating from external modification
+        <pre>
+            void Main()
+            {
+                var order = new Order();
+                order.AddOrderItem(1, "Newman");
+                foreach(var obj in order.OrderItems)
+                {
+                    Console.WriteLine(obj.Id);
+                    Console.WriteLine(obj.CustomerName);
+                }
+            }
+            public class Order
+            {
+                private readonly List&lt;OrderItem&gt; _orderItems;
+                public IReadOnlyCollection&lt;OrderItem&gt; OrderItems =&gt; _orderItems;
+                public Order()
+                {
+                    _orderItems = new List&lt;OrderItem&gt;();
+                }
+                public void AddOrderItem(int id, string customerName)
+                {
+                    var orderItem = new OrderItem(id, customerName);
+                    _orderItems.Add(orderItem);
+                }
+            }
+            public class OrderItem
+            {
+                public OrderItem(int id, string customerName)
+                {
+                    Id = id;
+                    CustomerName = customerName;
+                }
+                public int Id {get;set;}
+                public string CustomerName{get;set;}
+            }
+        </pre>
+        we are declaring variable as <b>private readonly</b> in the class meaning we can only initialize it in the constructor but we can access or manage the method of the object.
+    </p>
 </p>
