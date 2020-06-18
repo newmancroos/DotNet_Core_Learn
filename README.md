@@ -1290,4 +1290,142 @@
         </pre>
         we are declaring variable as <b>private readonly</b> in the class meaning we can only initialize it in the constructor but we can access or manage the method of the object.
     </p>
+    <p>
+        <h3>Dependency Injection in Asp.net Core</h3><br>
+        <u>
+            <li>
+                Singleton
+            </li>
+            <li>
+                Scoped
+            </li>
+            <li>
+                Transient
+            </li>
+        </u>
+        <br>
+        Actual registration of Services as follows,<br>
+        <pre>
+            services.add(new ServicesDescription(typeof(IDataService), typeof(DataService), ServiceLifetime.Transient));
+        </pre>
+        but .Net Core has several extension method to register the service in many other syntax<br>
+        <pre>
+            services.AddTransient&lt;IDataService, DataService&gt;()
+        </pre>
+        In some cases we may need to instantiate a service during register another service, here we use <b>Implementation factory</b> on the service descriptor.
+        <pre>
+            services.AddTransient&lt;IDataservice, DataService&gt;((ctx)=>
+            {
+                IOtherService svc = ctx.GetService<IOtherService>();   // If  service not exist, return null
+                //IOtherServices svc = ctx.GetRequiredService<IOtherService>()   // If service not exist, will throw exception
+                return new Dataservice(svc);
+            })
+        </pre>
+        Let say There is a service that implement two interfaces,
+        <br>
+        <pre>
+            public DataService : IDataService, OtherDataService{}
+        </pre>
+        here when we register the service(let say in singleton)
+        <pre>
+            services.AddSingleton&lt;IDataService, DataService&gt;();
+            services.AddSingleton&lt;IOtherDataService, DataService&gt;();
+        </pre>
+        So in the singletone world we'll have two separate instances for DataService, we can make it one,
+        <pre>
+            var service= new DataService();
+            services.AddSingleton&lt;IDataService&gt;(service);
+            services.AddSingleton&lt;IOtherDataService&gt;(service);            
+        </pre>
+        so when ever we inject IDataservice that shares same instance.<br>
+        When we register, if we want instance of another service, we can also use<b>ServiceProvider</b>
+        <pre>
+            IServiceProvider provider = services.BuildServiceProvider();
+            IOtherService otherService = provider.GetRequiredService&lt;IOtherservice&gt;();
+            var dataService = new DataService(otherService);
+            services.AddSingleton&lt;IDataService&gt;(dataService);            
+        </pre>
+        <br>
+        other than all the above, we can use dependency injection inside the Middelware<br>
+        Normal Middleware as like below,
+        <pre>
+            public class LoggingMiddleware
+            {
+                private readonly RequestDelegate _next;
+                public LoggingMiddleware(RequestDelegate next)
+                {
+                    _next = next;
+                }
+                public async Task Invoke(httpContext ctx)
+                {
+                    Debug.WriteLine("Write any logic to validate the request here");
+                    await _next(ctx);
+                    Debug.WriteLine("Request completed, have access to response here");
+                }
+            }
+        </pre>
+        <br>
+        there are three ways to inject component in middleware,
+            <ul>
+                <li>Constructor</li>
+                <li>Invoke parameter</li>
+                <li>HttpContext.RequestServices</li>
+            </ul> 
+            lets implement all these three ways in a single middleware
+            <pre>
+                public class LoggingMiddleware
+                {
+                    private readonly RequestDelegate _next;
+                    private readonly IDataService _svc;
+                    <br>
+                    public LoggingMiddleware(RequestDelegate next, IDataService svc)  //Constructor injection
+                    {
+                        _next = next;
+                        _svc = svc;
+                    }
+                    public async Task Invoke(HttpContext ctx, IDataService svc2)  //Invoke parameter
+                    {
+                        IDataService svc3 = ctx.RequestServices.GetService<IDataService>();   // Provider injecttion
+                        Debug.WriteLine("Request Staring");
+                        await _next(ctx);
+                        Debug.WriteLine("Request complete");
+                    }
+                }
+            </pre>
+            <h3>Startup.cs Class</h3><br>
+            In startup class we can inject <b>IHostEnvironment</b> and <b>ILoggerFactory</b> as constructor injection. These are the  two interface methods specifiedin MS document.<br>
+            In <b>Configure</b> method we can inject any components that have been registered.<br>
+            <b>If you need any component during Pipeline configuration(Configure method), you can register them there.</b><br>
+            If you use <b>app.Run(), app.Use(), app.UseWhen(), app.Map() to register simple middleware, you cannot use constructor injection. the only way to get the component is app.ApplicationServices.GetService(Interface)</b>
+            <pre>
+                public  void Configure()
+                {
+                    IDataService = datasvc2 = app.ApplicationServices.getService&lt;IDataService&gt;();
+                    app.Use((ctx, next)=&gt;
+                    {
+                        IDataService svc = ctx.RequestServices.GetService&lt;IDataService&gt;();
+                        return next();
+                    })
+                    app.Map("/test", subApp =&gt;
+                    {
+                        IDataService svc1 = subApp.ApplicationServices.GetService&lt;IDataService&gt;();
+                        subApp.Run((context =&gt;
+                        {
+                            IDataService svc3 = context.RequestServices.GetService&lt;IDataService&gt;();
+                            return context.Response.WriteAsync("Hi");
+                        }));
+                    })
+                    pp.MapWhen(ctx =&gt;ctx.Request.Path.StartWithSegments("/test2"), subApp =&gt;
+                    {
+                        IDataService svc1 = subApp.ApplicationServices.GetService&lt;IDataService&gt;();
+                        subApp.Run((context =&gt;
+                        {
+                            IDataService svc3 = context.RequestServices.GetService&lt;IDataService&gt;();
+                            return context.Response.WriteAsync("Hi");
+                        }));
+                    })
+                }
+            </pre>
+    </p>
+
 </p>
