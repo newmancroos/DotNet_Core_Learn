@@ -1427,5 +1427,42 @@
                 }
             </pre>
     </p>
+    <p>
+        <h2>Note:</h2><br>
+        <ul>
+            <li>
+                when we create a .net Core application we can create <b>Web Api, Mvc or Empty</b>
+            </li>
+            <li>
+                In the Startup.cs ConfigureServices method we can specify
+                    <ul>
+                        <li>services.AddMvc()  --Model view controller</li>
+                        <li>services.AddController() - Webapi</li>
+                        <li>services.AddControllerWithView() -- Model, Controller and view </li>
+                        <li>services.AddRazorPages()</li>
+                        <li>
+                            <img src="./images/DifferentProjects.JPG">
+                        </li>
+                    </ul>
+                    <li>
+                        Once we add Mvc we need to tell Edn point use te default controller in Configure Method<br>
+                        <pre>
+                        app.UseEndpoints(endpoint =&gt;
+                        {
+                            endpoint.MapDefaultControllerRoute();
+                        }) 
+                        </pre>
+                        normal declaration that equivenalnt to above 
+                        <pre>
+                        routes.MapControllerRoute(
+                            name: "default",
+                            template: "{controller:Home}/{action:Index}/{id?}");
+                        </pre>
+                        <br>
+                        This will route to <b>Home controller - Index method</b> 
+                    </li>
+            </li>
+        </ul>
+    </p>
 
 </p>
