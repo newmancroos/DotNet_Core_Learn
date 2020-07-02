@@ -1436,12 +1436,13 @@
             <li>
                 In the Startup.cs ConfigureServices method we can specify
                     <ul>
-                        <li>services.AddMvc()  --Model view controller</li>
+                        <li>services.AddMvc()  --Model view controller and all other projects</li>
                         <li>services.AddController() - Webapi</li>
                         <li>services.AddControllerWithView() -- Model, Controller and view </li>
-                        <li>services.AddRazorPages()</li>
+                        <li>services.AddRazorPages() -- Razon pages project</li>
                         <li>
-                            <img src="./images/DifferentProjects.JPG">
+                            <img src="./images/DifferentProjects.JPG"><br>
+                            <img src="./images/DifferentProjects1.JPG">
                         </li>
                     </ul>
                     <li>
