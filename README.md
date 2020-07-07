@@ -1465,5 +1465,72 @@
             </li>
         </ul>
     </p>
-
+    <br><br>
+    <p>
+        <h2>IComparable Vs IComparer Interface</h2><br>
+        <p>
+            <h3>IComparable</h3>
+            Normaly if we want to sort a list og numbers we can simplme use <b>Sort</b> method of the list, like bellow
+            <pre>
+                List&lt;int&gt; listOfIntegers = new List&lt;int&gt;() {55,12,5,78,9,65};
+                listOfIntegers.Sort();
+            </pre>
+            but let say we have list of some class object and we need to sort the class according to a field of the class, if we use <b>Sort</b> method, we'll get unhandle exception stating.<br>
+            so We need to inherit <b>IComparable</b> interface and write some code to make <b>Sort</b> method enable in a class.
+            <pre>
+                class SmartPhone : IComparable
+                {
+                    public string Name { get; set; }
+                    public double Price { get; set; }
+                    public string OS { get; set; }
+                    public bool IsFlagship { get; set; }
+                    public override string ToString()
+                    {
+                        return "Name: " + Name + "||Price: " + Price + "||OS :" + OS + "||Is Flagship : " + IsFlagship; 
+                    }
+                    public int CompareTo(object obj)
+                    {
+                        if(obj == null) return 1;
+                        SmartPhone nextSmartPhone = obj as SmartPhone;
+                        if (nextSmartPhone != null)
+                        {
+                            return this.Price.CompareTo(nextSmartPhone.Price);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Object doesn't support have a proper price");
+                        }
+                    }
+                }            
+            </pre>
+            we can use Sort() to the instance of the list of this class
+        </p>
+        <p>
+            <h3>IComparer</h3>
+            Let say e are using some 3rd party dll that has a class with fields and we want to Sort the list of the class, since we don't controle to modify the 3rd party class to impement <b>IComrable</b> interface, we can use <b>IComparer</b> to a newly created class that inherit 3rd party dll class inside <b>IComparer</b> interface.
+            <pre>
+                class ThirdParty
+                {
+                    public string Name { get; set; }
+                    public double Price { get; set; }
+                    public string OS { get; set; }
+                    public bool IsFlagship { get; set; }
+                }
+                <br>
+                class ThirdPartySort : IComparer&lt;ThirdParty&gt;
+                {
+                    public int Compare([AllowNull] ThirdParty x, [AllowNull] ThirdParty y)
+                    {
+                        ThirdParty x1 = x as ThirdParty;
+                        ThirdParty y1 = y as ThirdParty;
+                        return x1.Price.CompareTo(y1.Price);
+                    }
+                }
+                <br>
+                ThirdPartySort thirdPartySort = new ThirdPartySort();
+                ThridpartyPhones.Sort(thirdPartySort);
+                smartPhones.Sort();
+            </pre>
+        </p>
+    </p>
 </p>
