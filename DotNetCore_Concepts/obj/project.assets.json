@@ -8375,7 +8375,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\newman\\.nuget\\packages\\": {},
+    "C:\\Users\\aanewman\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
@@ -8384,14 +8384,14 @@
       "projectUniqueName": "C:\\Projects\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
       "projectName": "DotNetCore_Concepts",
       "projectPath": "C:\\Projects\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\DotNetCore_Concepts.csproj",
-      "packagesPath": "C:\\Users\\newman\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\aanewman\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\Git\\DotNet_Core_Learn\\DotNetCore_Concepts\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\newman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\aanewman\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],

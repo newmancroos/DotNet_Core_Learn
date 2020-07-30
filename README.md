@@ -1532,5 +1532,26 @@
                 smartPhones.Sort();
             </pre>
         </p>
+        <p>
+            To use static file we have to specify in the Startup class Configure method
+            <pre>
+                app.UseStaticFiles();
+            </pre>
+            But if you have your images in somewhere except wwwroot/images we need to use 
+            <pre>
+                app.UseStaticFiles(new StaticFileOption{
+                    FileProvider = new FileProvider(Path.Combine(Directory.GetCurrentDirectory(),"imagesPath")),RequestPath("/imagesPath");
+                })
+            </pre>
+            here <i>Directory.GetCurrentDirectory()</i> return root directory path as startup.cs is in root directory and <i>images</i> folder also in root directory.
+        </p>
+        <p>
+            To use client side library we can install them using,
+            Add -> Client-Side Library and choose what ever library we want.<br>
+            Here there will be nbew file libman.json will added to the project that contain the details of client library added to the project. We can right click and <b>clear all client side</b> library or add it ignore file and right click <b>restore</b>
+            will restore all the files.
+            <br>
+                when you check-in changes, from the Team exporer right click lib folder then select ignore these local item will be created and lib folder added to the ignore file.
+        </p>
     </p>
 </p>
