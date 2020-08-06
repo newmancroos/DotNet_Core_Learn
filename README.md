@@ -1554,4 +1554,21 @@
                 when you check-in changes, from the Team exporer right click lib folder then select ignore these local item will be created and lib folder added to the ignore file.
         </p>
     </p>
+	<p>
+		<h2>Razor file runtime compilation</h2><br>
+		When we work on Asp.Net core Razor page MVC application, when we change anything in the cshtml page we have to recompile the application to see the changes in the screen, In development environment it is hard to each time compile the application for our changes. We can change this behaviour by installing a Nuget package<br>
+		<b>Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation</b><br>
+		Install this Nuget package and make some changes in the startup.cs Configure method
+		<pre>
+			Services.AddRazorPages().AddRazonRuntimeCompilation();
+		</pre>
+		<br>
+		But once thing we need to consider, If you add this configuration it will be carry-in to production and degrade the performance, we can configure this only in development environment by implementing <b>Preprocessor condition</b>
+		
+		<pre>
+			#if DEBUG
+				Services.AddRazorPages().AddRazonRuntimeCompilation();
+			#endif
+		</pre>
+	</p>
 </p>
