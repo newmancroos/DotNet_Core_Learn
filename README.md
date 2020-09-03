@@ -1564,7 +1564,6 @@
 		</pre>
 		<br>
 		But once thing we need to consider, If you add this configuration it will be carry-in to production and degrade the performance, we can configure this only in development environment by implementing <b>Preprocessor condition</b>
-		
 		<pre>
 			#if DEBUG
 				Services.AddRazorPages().AddRazonRuntimeCompilation();
