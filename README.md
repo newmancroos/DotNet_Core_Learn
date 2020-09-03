@@ -1581,7 +1581,6 @@
 				<pre>
 					//We have 
 					@RenderSection("Scripts", required: false)  // in Layout file
-					
 					//The below code is in View file
 					@section Script{
 						<script>
