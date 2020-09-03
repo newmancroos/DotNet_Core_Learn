@@ -1579,14 +1579,14 @@
 				Let say, we are writing our javascrip code using Script tag with in our view file that uses JQuery, basically the code we write will be about the script tag for Jquery library script tag that means before define the Jquery we try to use its functionality so we get the error.<br>
 				Using RenderSection tell the Layout there will be some javascript code at runtime and we defind RenderSection in the layout file at last to all javascrip library.
 				<pre>
-					//We have 
-					@RenderSection("Scripts", required: false)  // in Layout file
-					//The below code is in View file
-					@section Script{
-						<script>
-						//any javascript code
-						</script>
-					}
+		//We have 
+		@RenderSection("Scripts", required: false)  // in Layout file
+		//The below code is in View file
+		@section Script{
+			<script>
+			//any javascript code
+			</script>
+		}
 				</pre>
 				RenderSection and Section is not only for javascript it can be even use to insert content like html content or text cotent into any page.
 			</li>
