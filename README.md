@@ -1571,4 +1571,27 @@
 			#endif
 		</pre>
 	</p>
+	<p>
+		<h2> Layout in Asp.Net Core Mvc</h2><br>
+		<ul>
+			<li>
+				<b>Why do we need RenderSection?</b><br>
+				In MVC we define all our thrid party library and even our js file in the Layout file just above the closing body tag.<br>
+				Let say, we are writing our javascrip code using Script tag with in our view file that uses JQuery, basically the code we write will be about the script tag for Jquery library script tag that means before define the Jquery we try to use its functionality so we get the error.<br>
+				Using RenderSection tell the Layout there will be some javascript code at runtime and we defind RenderSection in the layout file at last to all javascrip library.
+				<pre>
+					//We have 
+					@RenderSection("Scripts", required: false)  // in Layout file
+					
+					//The below code is in View file
+					@section Script{
+						<script>
+						//any javascript code
+						</script>
+					}
+				</pre>
+				RenderSection and Section is not only for javascript it can be even use to insert content like html content or text cotent into any page.
+			</li>
+		</ul>
+	</p>
 </p>
