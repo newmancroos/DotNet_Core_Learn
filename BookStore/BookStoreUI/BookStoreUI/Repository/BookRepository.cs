@@ -12,12 +12,12 @@ namespace BookStoreUI.Repository
         public BookRepository()
         {
             Books = new List<BookModel> {
-                new BookModel{ Id =1, Title = "C# Design Patters", Author="Avinash Thakur", Description = "All design patterns in C#", Category = "Computer Languages"},
-                new BookModel{ Id =2, Title = "Clean Architecture", Author="Robert C. Martin", Description = "All about Application architecture", Category = "Information Technology"},
-                new BookModel{ Id =3, Title = "Learning React", Author="Chinnathambi", Description = "Very basic concept and sample about React js", Category = "Information Technology"},
-                new BookModel{ Id =4, Title = "Microsft Azure Fundamentals", Author="Jim Cheshire", Description = "Preparation for Microsoft Az900 certification exam", Category = "Information Technology"},
-                new BookModel{ Id =5, Title = "Java", Author="Webgentle", Description = "This is the description for Java book", Category = "Information Technology"},
-                new BookModel{ Id =6, Title = "Azure DevOps", Author="Nithish", Description = "This is the description for Azure DevOps book", Category = "Information Technology"}
+                new BookModel{ Id =1, Title = "C# Design Patters", Author="Avinash Thakur", Description = "All design patterns in C#", Category = "Computer Languages", Language="English", TotalPages = 123},
+                new BookModel{ Id =2, Title = "Clean Architecture", Author="Robert C. Martin", Description = "All about Application architecture", Category = "Architecture", Language="English", TotalPages = 434},
+                new BookModel{ Id =3, Title = "Learning React", Author="Chinnathambi", Description = "Very basic concept and sample about React js", Category = "Javascript Technology", Language="English", TotalPages = 232},
+                new BookModel{ Id =4, Title = "Microsft Azure Fundamentals", Author="Jim Cheshire", Description = "Preparation for Microsoft Az900 certification exam", Category = "Certification", Language="English", TotalPages = 342},
+                new BookModel{ Id =5, Title = "Java", Author="Webgentle", Description = "This is the description for Java book", Category = "Language", Language="Chinies", TotalPages = 233},
+                new BookModel{ Id =6, Title = "Azure DevOps", Author="Nithish", Description = "This is the description for Azure DevOps book", Category = "Devops", Language="English", TotalPages = 442}
 
             };
         }
@@ -90,6 +90,8 @@ namespace BookStoreUI.Repository
                      Description = book.Description,
                      Id = book.Id,
                      Title = book.Title,
+                     Language = book.Language,
+                     TotalPages = book.TotalPages
                  }).FirstOrDefault();
         }
 

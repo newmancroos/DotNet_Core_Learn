@@ -1571,6 +1571,24 @@
 		</pre>
 	</p>
 	<p>
+		<h3>Get appsetting and convert it to class
+		<pre>
+			var settingSection = config.GetSession(nameof(classname));
+			var settings = settingSection.Get<className>();
+			services.Configure<className>(settingSection);
+		</pre>
+	</p>
+	<p>
+		<h3>Remove cache on controller method so that controllr always provide latest details</h3>
+		<pre>
+			[ResponseCache(Duration = 0, Location = ResponseCcheLocation.None, NoStore = true)]
+			public IActionResult Error()
+			{
+				return View(new ErrorModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+			}
+		</pre>
+	</p>
+	<p>
 		<h2> Layout in Asp.Net Core Mvc</h2><br>
 		<ul>
 			<li>

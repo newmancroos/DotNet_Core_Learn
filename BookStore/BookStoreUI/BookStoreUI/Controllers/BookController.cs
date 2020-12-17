@@ -23,9 +23,10 @@ namespace BookStoreUI.Controllers
             return View(data);
         }
 
-        public BookModel GetBook(int id)
+        public ViewResult GetBook(int id)
         {
-            return _bookRepository.GetBookById(id);
+            var book = _bookRepository.GetBookById(id);
+            return View(book);
         }
 
         //public BookModel GetBook(int id)
