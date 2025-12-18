@@ -1,0 +1,6 @@
+@Wolverine_HostAddress = http://localhost:5249
+
+GET {{Wolverine_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
